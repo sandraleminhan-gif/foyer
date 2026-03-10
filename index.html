@@ -555,7 +555,6 @@ function getSavePayload(){
 }
 
 function saveState(){
-  // Debounce: wait 800ms after last change before saving
   clearTimeout(_saveTimeout);
   _saveTimeout = setTimeout(_doSave, 800);
 }
@@ -565,30 +564,64 @@ async function _doSave(){
   _isSaving = true;
   showSync('saving', '💾 Sauvegarde…');
   try {
-    const resp = await fetch(API_URL, {
-      method: 'POST',
-      headers: {'Content-Type':'text/plain'},
-      body: JSON.stringify(getSavePayload())
-    });
-    const data = await resp.json();
-    if(data.success){
-      showSync('saved', '✅ Sauvegardé');
+    // Google Apps Script redirects POST responses — use no-cors with beacon-style
+    // Encode payload as URL param to use GET (most reliable for GAS cross-origin)
+    const payload = encodeURIComponent(JSON.stringify(getSavePayload()));
+    
+    // If payload is small enough for GET (<8000 chars), use GET
+    if(payload.length < 7500){
+      const resp = await fetch(API_URL + '?action=save&data=' + payload, {
+        method: 'GET',
+        redirect: 'follow'
+      });
+      const data = await resp.json();
+      if(data.success){
+        showSync('saved', '✅ Sauvegardé');
+      } else {
+        throw new Error(JSON.stringify(data));
+      }
     } else {
-      showSync('error', '❌ Erreur sauvegarde');
-      console.error('Save error:', data);
+      // For large payloads, use iframe form POST trick
+      await postViaForm(getSavePayload());
+      showSync('saved', '✅ Sauvegardé');
     }
   } catch(e){
-    showSync('error', '❌ Hors ligne');
+    showSync('error', '❌ Erreur sauvegarde');
     console.error('Save failed:', e);
-    // Store locally as fallback
     try { localStorage.setItem('foyer_backup', JSON.stringify(getSavePayload())); } catch(x){}
   }
   _isSaving = false;
 }
 
+function postViaForm(data){
+  return new Promise((resolve)=>{
+    const iframe = document.createElement('iframe');
+    iframe.name = 'saveFrame';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = API_URL;
+    form.target = 'saveFrame';
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'data';
+    input.value = JSON.stringify(data);
+    form.appendChild(input);
+    const actionInput = document.createElement('input');
+    actionInput.type = 'hidden';
+    actionInput.name = 'action';
+    actionInput.value = 'save';
+    form.appendChild(actionInput);
+    document.body.appendChild(form);
+    iframe.onload = ()=>{ setTimeout(()=>{ iframe.remove(); form.remove(); }, 100); resolve(); };
+    form.submit();
+  });
+}
+
 async function loadState(){
   try {
-    const resp = await fetch(API_URL + '?action=load');
+    const resp = await fetch(API_URL + '?action=load', { redirect: 'follow' });
     const data = await resp.json();
     if(data.success && data.state){
       const st = data.state;
@@ -608,7 +641,6 @@ async function loadState(){
     }
   } catch(e){
     console.warn('Load from GSheet failed, trying local backup:', e);
-    // Try local backup
     try {
       const backup = localStorage.getItem('foyer_backup');
       if(backup){
