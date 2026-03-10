@@ -1,0 +1,2168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Foyer — Notre Maison</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#F5F2EE">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiRm95ZXIiLCJzaG9ydF9uYW1lIjoiRm95ZXIiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI0Y1RjJFRSIsInRoZW1lX2NvbG9yIjoiI0Y1RjJFRSIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSFpwWlhkQ2IzZzlJakFnTUNBeE9USWdNVGt5SWo0OGNtVmpkQ0IzYVdSMGFEMGlNVGt5SWlCb1pXbG5hSFE5SWpFNU1pSWdjbmc5SWpRd0lpQnllVDBpTkRBaUlHWnBiR3c5SWlNM1FVRkdPVFFpTHo0OGRHVjRkQ0I0UFNJNU5pSWdlVDBpTVRBMElpQm1iMjUwTFhOcGVtVTlJamcwSWlCbWFXeHNQU0ozYUdsMFpTSWdkR1Y0ZEMxaGJtTm9iM0k5SW0xcFpHUnNaU0lnWm05dWRDMW1ZVzFwYkhrOUlpZEVUU0JUWlhKcFppQkVhWE53YkdGNUp5eHpaWEpwWmlJK+KMgjwvdGV4dD48L3N2Zz4iLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F5F2EE; --surface:#FDFCFB; --surface2:#F0EDE8; --border:#E8E2DA;
+  --text:#2C2420; --text2:#7A6E66; --text3:#B0A49A;
+  --sage:#7AAF94; --sage-bg:#EAF3EE; --sage-mid:#C0DACC;
+  --rose:#D0848E; --rose-bg:#FAECEE; --rose-mid:#E8C0C8;
+  --sky:#7AAEC8; --sky-bg:#E8F2F8; --sky-mid:#BAD8EC;
+  --gold:#C4A45A; --gold-bg:#F8F2E0; --gold-mid:#E4D098;
+  --lav:#9E8DC8; --lav-bg:#F0ECFA; --lav-mid:#D0C8EC;
+  --red:#D46060; --red-bg:#FAEAEA; --red-mid:#E8BCBC;
+  --nav-h:66px; --r:14px; --rsm:9px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:calc(var(--nav-h) + 20px)}
+
+/* ─── NAV ─── */
+.nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--surface);border-top:1.5px solid var(--border);display:flex;align-items:stretch;z-index:200;box-shadow:0 -6px 24px rgba(44,36,32,.07)}
+.nav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;border:none;background:transparent;position:relative}
+.nav-tab::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%) scaleX(0);width:28px;height:3px;border-radius:99px;transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.nav-tab[data-tab="repas"]::after{background:var(--sage)}
+.nav-tab[data-tab="courses"]::after{background:var(--sky)}
+.nav-tab[data-tab="menage"]::after{background:var(--gold)}
+.nav-tab.active::after{transform:translateX(-50%) scaleX(1)}
+.nav-icon{font-size:21px;transition:transform .2s}
+.nav-tab.active .nav-icon{transform:translateY(-2px)}
+.nav-label{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);transition:color .2s}
+.nav-tab[data-tab="repas"].active .nav-label{color:var(--sage)}
+.nav-tab[data-tab="courses"].active .nav-label{color:var(--sky)}
+.nav-tab[data-tab="menage"].active .nav-label{color:var(--gold)}
+.nav-badge{position:absolute;top:8px;right:calc(50% - 22px);background:var(--red);color:#fff;font-size:9px;font-weight:700;border-radius:99px;padding:1px 5px;min-width:16px;text-align:center;display:none}
+.nav-badge.visible{display:block}
+
+/* ─── PAGES ─── */
+.page{display:none}.page.active{display:block}
+
+/* ─── SHARED HEADER ─── */
+.ph{padding:36px 20px 20px;position:relative}
+.ph-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px}
+.ph h1{font-family:'DM Serif Display',serif;font-size:clamp(26px,6vw,38px);font-weight:400;line-height:1.1}
+.ph h1 em{font-style:italic}
+.ph-sub{margin-top:6px;font-size:13px;color:var(--text2);line-height:1.5}
+.ph-chip{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:5px 13px;border-radius:99px;font-size:11.5px;font-weight:500}
+
+/* ─── SECTION ─── */
+.sec{padding:0 20px 16px}
+.sec-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:2.5px;color:var(--text3);margin-bottom:10px;padding-left:2px}
+
+/* ─── CARD ─── */
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:10px}
+.card-hdr{display:flex;align-items:center;padding:14px 16px;gap:12px;cursor:pointer;transition:background .15s}
+.card-hdr:hover{background:var(--surface2)}
+.card-body{max-height:0;overflow:hidden;transition:max-height .38s cubic-bezier(.4,0,.2,1)}
+.card-body-inner{padding:4px 16px 16px;border-top:1.5px solid var(--border)}
+.card.open .card-body{max-height:3000px}
+.ctoggle{color:var(--text3);font-size:17px;transition:transform .25s;margin-left:auto;flex-shrink:0}
+.card.open .ctoggle{transform:rotate(180deg)}
+
+/* ─── ICON PILL ─── */
+.ipill{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+
+/* ─── BADGES ─── */
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:99px;font-size:10.5px;font-weight:600}
+
+/* ─── BUTTONS ─── */
+.btn{font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:500;padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--text2)}
+.btn-sage{border-color:var(--sage-mid);color:var(--sage);background:var(--sage-bg)}
+.btn-sage:hover{background:var(--sage-mid)}
+.btn-rose{border-color:var(--rose-mid);color:var(--rose);background:var(--rose-bg)}
+.btn-rose:hover{background:var(--rose-mid);color:#fff}
+.btn-sky{border-color:var(--sky-mid);color:var(--sky);background:var(--sky-bg)}
+.btn-red{border-color:var(--red-mid);color:var(--red);background:var(--red-bg)}
+.btn-solid-sage{background:var(--sage);border-color:var(--sage);color:#fff}
+.btn-solid-sage:hover{background:#5E9A7A}
+.btn-solid-sky{background:var(--sky);border-color:var(--sky);color:#fff}
+.btn-solid-sky:hover{background:#5A94AE}
+
+/* ─── PROGRESS BAR ─── */
+.prog-wrap{display:flex;align-items:center;gap:12px;margin:0 20px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px}
+.prog-bar-bg{flex:1;height:6px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.prog-bar{height:100%;border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.prog-label{font-size:11.5px;font-weight:500;color:var(--text2);white-space:nowrap}
+.prog-count{font-size:13px;font-weight:600;white-space:nowrap}
+
+/* ─── FORM ELEMENTS ─── */
+.finput{font-family:'DM Sans',sans-serif;font-size:13.5px;padding:9px 13px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--rsm);color:var(--text);outline:none;transition:border-color .18s;width:100%}
+.finput:focus{border-color:var(--sage)}
+.flabel{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:5px}
+
+/* ─── ALERT BOX ─── */
+.alert-box{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:var(--rsm);font-size:13px;line-height:1.5}
+.alert-box.warn{background:#FFF4E0;border:1.5px solid #E8C870;color:#7A5010}
+.alert-box.danger{background:var(--red-bg);border:1.5px solid var(--red-mid);color:#7A2020}
+.alert-box.info{background:var(--sage-bg);border:1.5px solid var(--sage-mid);color:#2A5A3A}
+
+/* ══════════════════════════════
+   PAGE REPAS
+══════════════════════════════ */
+#page-repas .ph{background:var(--sage-bg)}
+#page-repas .ph-label{color:var(--sage)}
+#page-repas .ph h1 em{color:var(--sage)}
+#page-repas .ph-chip{background:var(--sage-mid);color:#2A5038}
+
+/* ─── À REPLACER ZONE ─── */
+.replacer-zone{margin:0 20px 16px;background:var(--red-bg);border:1.5px solid var(--red-mid);border-radius:var(--r);overflow:hidden}
+.replacer-hdr{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;background:var(--red-bg)}
+.replacer-title{font-size:13px;font-weight:600;color:var(--red);flex:1}
+.replacer-count{background:var(--red);color:#fff;font-size:10px;font-weight:700;border-radius:99px;padding:1px 7px}
+.replacer-body{padding:10px 16px 14px;border-top:1.5px solid var(--red-mid);display:none}
+.replacer-zone.open .replacer-body{display:block}
+.replacer-zone.open .replacer-toggle{transform:rotate(180deg)}
+.replacer-toggle{color:var(--red);font-size:17px;transition:transform .25s}
+
+.repl-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border:1.5px solid var(--red-mid);border-radius:var(--rsm);margin-bottom:8px}
+.repl-item:last-child{margin-bottom:0}
+.repl-icon{font-size:20px;flex-shrink:0}
+.repl-info{flex:1}
+.repl-name{font-size:13px;font-weight:600}
+.repl-from{font-size:11px;color:var(--text3);margin-top:1px}
+.repl-actions{display:flex;gap:6px}
+
+/* ─── WEEK NAV ─── */
+.week-nav{display:flex;gap:4px;padding:0 20px 16px;overflow-x:auto;scrollbar-width:none}
+.week-nav::-webkit-scrollbar{display:none}
+.wday{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 10px;border-radius:var(--rsm);border:1.5px solid transparent;background:transparent;cursor:pointer;flex-shrink:0;transition:all .18s;position:relative}
+.wday:hover{background:var(--surface)}
+.wday.active{background:var(--surface);border-color:var(--border)}
+.wday.past{opacity:.55}
+.wday.has-pending::after{content:'';position:absolute;top:5px;right:8px;width:6px;height:6px;border-radius:50%;background:var(--red)}
+.wday-name{font-size:9.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3)}
+.wday-num{font-family:'DM Serif Display',serif;font-size:22px;line-height:1;color:var(--text)}
+.wday.active .wday-name{color:var(--text2)}
+.wday-dot{width:5px;height:5px;border-radius:50%;background:transparent}
+.wday.today .wday-dot{background:var(--sage)}
+
+/* ─── PLAN SEMAINE BTN ─── */
+.plan-next-btn{display:flex;align-items:center;gap:10px;margin:0 20px 16px;padding:14px 16px;background:var(--surface);border:1.5px dashed var(--sage-mid);border-radius:var(--r);cursor:pointer;transition:all .18s;font-size:13.5px;color:var(--text2)}
+.plan-next-btn:hover{border-color:var(--sage);color:var(--sage);background:var(--sage-bg)}
+
+/* ─── MEAL CARD ─── */
+.meal-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:10px;transition:border-color .2s}
+.meal-card.done-card{border-color:var(--sage-mid);opacity:.7}
+.meal-card.past-undone{border-color:var(--red-mid)}
+
+.meal-top{padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+.meal-moment{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--text3);margin-bottom:3px}
+.meal-name{font-family:'DM Serif Display',serif;font-size:17px;line-height:1.2}
+.meal-name em{font-style:italic;color:var(--sage)}
+.meal-time{margin-left:auto;font-size:11px;font-weight:500;color:var(--text3);background:var(--surface2);padding:3px 9px;border-radius:99px;white-space:nowrap;flex-shrink:0;align-self:flex-start;margin-top:2px}
+.meal-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+
+.meal-divider{height:1.5px;background:var(--border);margin:0 16px}
+.meal-details{padding:12px 16px;display:flex;flex-direction:column;gap:7px}
+.meal-detail{display:flex;align-items:flex-start;gap:9px;font-size:13px;line-height:1.4}
+.dd{width:5px;height:5px;border-radius:50%;background:var(--sage-mid);margin-top:5px;flex-shrink:0}
+.dd.gold{background:var(--gold)}
+.dd.sky{background:var(--sky)}
+.tip-row{font-size:12px;font-style:italic;color:var(--text2);padding-left:0}
+
+/* ─── DLC BADGE on meal ─── */
+.dlc-inline{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:var(--rsm);margin-top:6px;font-size:12.5px;cursor:pointer;border:1.5px dashed var(--border);color:var(--text3);transition:all .18s}
+.dlc-inline:hover{border-color:var(--rose);color:var(--rose);background:var(--rose-bg)}
+.dlc-inline.has-dlc{background:var(--rose-bg);border-color:var(--rose-mid);border-style:solid}
+.dlc-inline.has-dlc.ok{background:var(--sage-bg);border-color:var(--sage-mid);color:var(--sage)}
+.dlc-inline.has-dlc.warn{background:#FFF4E0;border-color:#E8C870;color:#7A5010}
+.dlc-inline.has-dlc.danger{background:var(--red-bg);border-color:var(--red-mid);color:var(--red)}
+
+/* ─── MEAL ACTIONS ─── */
+.meal-actions{padding:0 16px 14px;display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.meal-done-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:99px;border:1.5px solid var(--sage-mid);background:transparent;color:var(--sage);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:500;transition:all .18s}
+.meal-done-btn:hover,.meal-done-btn.active{background:var(--sage);border-color:var(--sage);color:#fff}
+.meal-done-btn.active{pointer-events:auto}
+
+/* ─── EDIT PANEL ─── */
+.edit-panel{display:none;padding:14px 16px;border-top:1.5px solid var(--border);background:var(--surface2);animation:fadeUp .2s ease}
+.edit-panel.open{display:block}
+.edit-tabs{display:flex;gap:6px;margin-bottom:12px}
+.etab{padding:5px 12px;border-radius:99px;border:1.5px solid var(--border);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .18s}
+.etab.active{background:var(--sky-bg);border-color:var(--sky-mid);color:var(--sky)}
+.edit-mode{display:none}.edit-mode.active{display:block}
+.suggestions{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.sug-btn{padding:5px 12px;border-radius:99px;border:1.5px solid var(--border);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;transition:all .15s;color:var(--text)}
+.sug-btn:hover{border-color:var(--sky);color:var(--sky);background:var(--sky-bg)}
+.edit-form{display:flex;gap:8px;margin-top:8px}
+.edit-save-row{display:flex;gap:8px;margin-top:10px}
+
+/* ─── REPORT SLOT PICKER ─── */
+.rslot{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface);cursor:pointer;transition:all .18s}
+.rslot:hover{border-color:var(--sage);background:var(--sage-bg)}
+.rslot.selected{border-color:var(--sage);background:var(--sage-bg)}
+.rslot.occupied{border-style:dashed}
+.rslot-day{font-family:'DM Serif Display',serif;font-size:20px;min-width:28px;text-align:center}
+.rslot-info{flex:1}
+.rslot-label{font-size:13px;font-weight:600}
+.rslot-current{font-size:11px;color:var(--text3);margin-top:1px}
+.rslot-occupied-tag{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:1px;padding:2px 7px;border-radius:99px;background:#FFF4E0;border:1px solid #E8C870;color:#7A5010;white-space:nowrap;flex-shrink:0}
+
+/* ─── REPORT MODAL ─── */
+.modal-overlay{position:fixed;inset:0;background:rgba(44,36,32,.4);z-index:500;display:none;align-items:flex-end;justify-content:center;animation:fadeIn .2s}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--r) var(--r) 0 0;width:100%;max-width:500px;padding:24px 20px 32px;animation:slideUp .3s cubic-bezier(.4,0,.2,1)}
+.modal h3{font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:6px}
+.modal-sub{font-size:13px;color:var(--text2);margin-bottom:18px}
+.day-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.dp-option{padding:12px 8px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface2);cursor:pointer;text-align:center;transition:all .18s}
+.dp-option:hover{border-color:var(--sage);background:var(--sage-bg)}
+.dp-option.selected{border-color:var(--sage);background:var(--sage-bg)}
+.dp-name{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
+.dp-date{font-family:'DM Serif Display',serif;font-size:22px;margin-top:2px;color:var(--text)}
+.dp-slot{font-size:10.5px;color:var(--text3);margin-top:3px}
+.dp-option.selected .dp-name,.dp-option.selected .dp-date,.dp-option.selected .dp-slot{color:var(--sage)}
+.modal-actions{display:flex;gap:8px}
+
+/* ─── DLC MODAL ─── */
+.dlc-modal-content{padding:24px 20px 32px}
+.dlc-modal-content h3{font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:16px}
+.dlc-conflict-box{padding:12px 14px;border-radius:var(--rsm);margin:14px 0;background:#FFF4E0;border:1.5px solid #E8C870;color:#7A5010;font-size:13px;line-height:1.5}
+.dlc-suggestions{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+.dlc-sug{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface);cursor:pointer;transition:all .18s;font-size:13px}
+.dlc-sug:hover{border-color:var(--sage);background:var(--sage-bg)}
+.dlc-sug.selected{border-color:var(--sage);background:var(--sage-bg)}
+.dlc-sug-date{font-family:'DM Serif Display',serif;font-size:20px;min-width:28px}
+.dlc-sug-info{flex:1}
+.dlc-sug-day{font-weight:600;font-size:13px}
+.dlc-sug-meal{font-size:11.5px;color:var(--text2)}
+
+/* ─── PLANNING MODAL ─── */
+.planning-modal{background:var(--surface);border-radius:var(--r) var(--r) 0 0;width:100%;max-width:500px;max-height:88vh;overflow-y:auto;animation:slideUp .3s cubic-bezier(.4,0,.2,1)}
+.pm-hdr{padding:20px 20px 14px;position:sticky;top:0;background:var(--surface);border-bottom:1.5px solid var(--border);z-index:10}
+.pm-hdr h3{font-family:'DM Serif Display',serif;font-size:20px}
+.pm-hdr p{font-size:12.5px;color:var(--text2);margin-top:4px}
+.pm-body{padding:16px 20px 24px;display:flex;flex-direction:column;gap:14px}
+.pm-day{border:1.5px solid var(--border);border-radius:var(--rsm);overflow:hidden}
+.pm-day-hdr{padding:10px 14px;background:var(--surface2);font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+.pm-day-hdr span{font-size:11px;color:var(--text3);font-weight:400}
+.pm-meals{padding:10px 14px;display:flex;flex-direction:column;gap:8px}
+.pm-meal{display:flex;gap:8px;align-items:flex-start}
+.pm-meal-label{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);padding-top:10px;min-width:36px;flex-shrink:0}
+.pm-meal-content{flex:1;display:flex;flex-direction:column;gap:6px}
+.pm-proposed{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--sage-bg);border:1.5px solid var(--sage-mid);border-radius:var(--rsm);font-size:13px;cursor:pointer;transition:all .18s}
+.pm-proposed:hover{background:var(--sage-mid)}
+.pm-proposed.validated{background:var(--sage);color:#fff;border-color:var(--sage)}
+.pm-proposed .pm-icon{font-size:16px;flex-shrink:0}
+.pm-proposed .pm-text{flex:1;font-weight:500}
+.pm-proposed .pm-check{font-size:14px;opacity:.6}
+.pm-proposed.validated .pm-check{opacity:1}
+.pm-edit-row{display:none;gap:6px}
+.pm-edit-row.visible{display:flex}
+
+/* ══════════════════════════════
+   PAGE COURSES
+══════════════════════════════ */
+#page-courses .ph{background:var(--sky-bg)}
+#page-courses .ph-label{color:var(--sky)}
+#page-courses .ph h1 em{color:var(--sky)}
+#page-courses .ph-chip{background:var(--sky-mid);color:#1A3C50}
+
+.add-item-bar{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface);border:1.5px dashed var(--border);border-radius:var(--r);cursor:pointer;font-size:13.5px;color:var(--text2);transition:all .18s;margin-bottom:4px}
+.add-item-bar:hover{border-color:var(--sky);color:var(--sky);background:var(--sky-bg)}
+.add-item-form{display:none;padding:12px 16px;border-top:1.5px solid var(--border);background:var(--surface2);animation:fadeUp .2s ease}
+.add-item-form.open{display:block}
+.add-form-row{display:flex;gap:8px;margin-top:8px}
+
+.item-row{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:var(--rsm);cursor:pointer;transition:background .12s;font-size:13.5px}
+.item-row:hover{background:var(--surface2)}
+.item-row.checked{opacity:.38}
+.item-row.checked .item-name{text-decoration:line-through}
+.icheck{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.item-row.checked .icheck{background:var(--sky);border-color:var(--sky)}
+.item-row.checked .icheck::after{content:'✓';color:#fff;font-size:11px;font-weight:700}
+.item-name{flex:1;line-height:1.35}
+.item-qty{font-size:11.5px;color:var(--text3);font-weight:500;white-space:nowrap}
+.item-check-tag{font-size:10.5px;padding:2px 7px;background:#FFF4E0;border:1px solid #E8C870;color:#7A5010;border-radius:99px;white-space:nowrap}
+.item-del{color:var(--text3);font-size:18px;cursor:pointer;padding:2px 4px;transition:color .15s;line-height:1;flex-shrink:0}
+.item-del:hover{color:var(--red)}
+
+/* ══════════════════════════════
+   PAGE MÉNAGE
+══════════════════════════════ */
+#page-menage .ph{background:var(--gold-bg)}
+#page-menage .ph-label{color:var(--gold)}
+#page-menage .ph h1 em{color:var(--gold)}
+#page-menage .ph-chip{background:var(--gold-mid);color:#4A3410}
+
+.mtabs{display:flex;gap:6px;padding:0 20px 16px}
+.mtab{flex:1;padding:9px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .18s;text-align:center}
+.mtab.active{background:var(--gold-bg);border-color:var(--gold-mid);color:#6A4A10}
+.mmode{display:none}.mmode.active{display:block}
+
+.pool-item{display:flex;align-items:flex-start;gap:11px;padding:10px 12px;border-radius:var(--rsm);cursor:pointer;transition:background .12s}
+.pool-item:hover{background:var(--surface2)}
+.pool-item.pinned{background:var(--gold-bg)}
+.pin-box{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .18s;margin-top:1px}
+.pool-item.pinned .pin-box{background:var(--gold);border-color:var(--gold);color:#fff}
+
+.wk-item{display:flex;align-items:flex-start;gap:11px;padding:11px 13px;border-radius:var(--rsm);cursor:pointer;transition:background .12s;margin-bottom:2px}
+.wk-item:hover{background:var(--surface2)}
+.wk-item.done{opacity:.4}
+.wk-item.done .wk-text{text-decoration:line-through}
+.wk-check{width:22px;height:22px;border-radius:7px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .18s;margin-top:1px}
+.wk-item.done .wk-check{background:var(--gold);border-color:var(--gold)}
+.wk-item.done .wk-check::after{content:'✓';color:#fff;font-size:12px;font-weight:700}
+.wk-text{font-size:13.5px;line-height:1.4}
+.wk-sub{font-size:11.5px;color:var(--text3);margin-top:2px}
+.delegate-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:var(--lav-bg);border:1px solid var(--lav-mid);border-radius:99px;font-size:10.5px;font-weight:600;color:var(--lav);margin-top:4px}
+
+.reset-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:transparent;border:1.5px solid var(--border);border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .18s;margin-top:10px}
+.reset-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-bg)}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+@media(max-width:400px){.ph,.sec,.prog-wrap,.mtabs,.week-nav,.replacer-zone,.plan-next-btn{padding-left:16px;padding-right:16px}.replacer-zone,.plan-next-btn{margin-left:16px;margin-right:16px}}
+
+/* ─── SYNC INDICATOR ─── */
+.sync-toast{position:fixed;top:12px;right:12px;z-index:999;padding:6px 14px;border-radius:99px;font-size:11.5px;font-weight:600;display:none;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(0,0,0,.12);transition:opacity .3s}
+.sync-toast.saving{display:flex;background:var(--gold-bg);border:1.5px solid var(--gold-mid);color:var(--gold)}
+.sync-toast.saved{display:flex;background:var(--sage-bg);border:1.5px solid var(--sage-mid);color:var(--sage)}
+.sync-toast.error{display:flex;background:var(--red-bg);border:1.5px solid var(--red-mid);color:var(--red)}
+
+/* ─── LOADING SCREEN ─── */
+#loadingScreen{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .4s}
+#loadingScreen.hidden{opacity:0;pointer-events:none}
+.loading-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--sage);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:14px;color:var(--text2);font-weight:500}
+</style>
+</head>
+<body>
+
+<!-- Loading screen -->
+<div id="loadingScreen">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Chargement des données…</div>
+</div>
+
+<!-- Sync indicator -->
+<div class="sync-toast" id="syncToast"></div>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <button class="nav-tab active" data-tab="repas" onclick="switchTab('repas')">
+    <span class="nav-icon">🥗</span>
+    <span class="nav-label">Repas</span>
+    <span class="nav-badge" id="nav-badge-repas"></span>
+  </button>
+  <button class="nav-tab" data-tab="courses" onclick="switchTab('courses')">
+    <span class="nav-icon">🛒</span>
+    <span class="nav-label">Courses</span>
+  </button>
+  <button class="nav-tab" data-tab="menage" onclick="switchTab('menage')">
+    <span class="nav-icon">✨</span>
+    <span class="nav-label">Ménage</span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════
+     PAGE REPAS
+══════════════════════════════ -->
+<div id="page-repas" class="page active">
+  <div class="ph">
+    <div class="ph-label">Planning · 5 personnes</div>
+    <h1>Repas de <em>la semaine</em></h1>
+    <p class="ph-sub">6 → 15 mars · Midis pour 2 · Dîners en famille</p>
+    <div class="ph-chip">🌿 TM6 &amp; Air Fryer · Vendredi = commande</div>
+  </div>
+
+  <!-- À replacer -->
+  <div class="replacer-zone" id="replacerZone" style="display:none">
+    <div class="replacer-hdr" onclick="toggleReplacer()">
+      <span style="font-size:18px">🔄</span>
+      <span class="replacer-title">À replacer cette semaine <span class="replacer-count" id="replacerCount">0</span></span>
+      <span class="replacer-toggle ctoggle">›</span>
+    </div>
+    <div class="replacer-body" id="replacerBody"></div>
+  </div>
+
+  <!-- Week nav -->
+  <div class="week-nav" id="weekNav"></div>
+
+  <!-- Day content -->
+  <div class="sec" id="dayContent"></div>
+
+  <!-- Plan semaine suivante -->
+  <div class="plan-next-btn" id="planNextBtn" onclick="openPlanningModal()">
+    <span style="font-size:20px">📅</span>
+    <span style="font-weight:600">Planifier la semaine suivante</span>
+    <span style="margin-left:auto;color:var(--text3)">›</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE COURSES
+══════════════════════════════ -->
+<div id="page-courses" class="page">
+  <div class="ph">
+    <div class="ph-label">Leclerc Drive · Vendredi</div>
+    <h1>Liste de <em>courses</em></h1>
+    <p class="ph-sub">Organisée par rayon · Cochage au fur et à mesure</p>
+    <div class="ph-chip">⚠️ Vérifier stock riz avant d'ajouter</div>
+  </div>
+  <div class="prog-wrap" id="coursesProg">
+    <span class="prog-label">Coché</span>
+    <div class="prog-bar-bg"><div class="prog-bar" id="coursesBar" style="background:var(--sky)"></div></div>
+    <span class="prog-count" id="coursesCount" style="color:var(--sky)">0/0</span>
+  </div>
+  <div class="sec" id="coursesContainer"></div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE MÉNAGE
+══════════════════════════════ -->
+<div id="page-menage" class="page">
+  <div class="ph">
+    <div class="ph-label">Appartement · 3 ch · 2 SDB</div>
+    <h1>Ménage <em>du foyer</em></h1>
+    <p class="ph-sub">Épingler en semaine · Cocher le weekend · Reset dimanche</p>
+    <div class="ph-chip">✨ Chats &amp; tortue inclus</div>
+  </div>
+  <div class="mtabs">
+    <button class="mtab active" onclick="switchMtab('select')">📌 Sélection semaine</button>
+    <button class="mtab" onclick="switchMtab('weekend')">☑️ Weekend</button>
+  </div>
+  <div id="mmode-select" class="mmode active"><div class="sec" id="poolContainer"></div></div>
+  <div id="mmode-weekend" class="mmode">
+    <div class="prog-wrap" id="mProg">
+      <span class="prog-label">Avancement</span>
+      <div class="prog-bar-bg"><div class="prog-bar" id="mBar" style="background:var(--gold)"></div></div>
+      <span class="prog-count" id="mCount" style="color:var(--gold)">0/0</span>
+    </div>
+    <div class="sec"><div id="weekendContainer"></div><button class="reset-btn" onclick="resetMenage()">🔄 Reset — nouveau weekend</button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     MODALS
+══════════════════════════════ -->
+<!-- Report modal (meal-level) -->
+<div class="modal-overlay" id="reportModal">
+  <div class="modal" style="max-height:80vh;overflow-y:auto">
+    <h3>Reporter ce repas</h3>
+    <p class="modal-sub" id="reportModalSub">Choisir un créneau pour <em id="reportMealName"></em></p>
+    <div id="reportSlotPicker" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px"></div>
+    <div id="reportCollisionWarn" style="display:none" class="alert-box warn">⚠️ Le créneau est occupé — le plat actuel sera déplacé dans « À replacer ».</div>
+    <div class="modal-actions">
+      <button class="btn btn-solid-sage" id="reportConfirmBtn" onclick="confirmMealReport()" disabled>Confirmer</button>
+      <button class="btn" onclick="closeModal('reportModal')">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- DLC modal -->
+<div class="modal-overlay" id="dlcModal">
+  <div class="modal dlc-modal-content">
+    <h3 id="dlcModalTitle">Date limite — <span id="dlcMealName"></span></h3>
+    <div class="form-row" style="margin-bottom:14px">
+      <div class="flabel">Date limite (DLC)</div>
+      <input class="finput" type="date" id="dlcInput">
+    </div>
+    <div id="dlcConflictBox" style="display:none"></div>
+    <div id="dlcSuggestionsWrap" style="display:none">
+      <div class="flabel" style="margin-bottom:8px">Déplacer ce repas avant le :</div>
+      <div class="dlc-suggestions" id="dlcSuggestions"></div>
+    </div>
+    <div class="modal-actions" style="margin-top:14px">
+      <button class="btn btn-solid-sage" onclick="confirmDlc()">Enregistrer</button>
+      <button class="btn" onclick="closeModal('dlcModal')">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- Planning modal -->
+<div class="modal-overlay" id="planningModal">
+  <div class="planning-modal">
+    <div class="pm-hdr">
+      <h3 id="pmTitle">Nouveau planning</h3>
+      <p id="pmSub">Créer ou planifier la semaine suivante</p>
+    </div>
+    <!-- Step 1: Setup -->
+    <div class="pm-body" id="planningSetup">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div>
+          <div class="flabel">Date de début</div>
+          <input type="date" class="finput" id="pmStartDate">
+        </div>
+        <div>
+          <div class="flabel">Date de fin</div>
+          <input type="date" class="finput" id="pmEndDate">
+        </div>
+        <div>
+          <div class="flabel">Notes / contraintes (optionnel)</div>
+          <input type="text" class="finput" id="pmNotes" placeholder="Ex: invités samedi, pas de porc, semaine légère...">
+        </div>
+        <div id="pmSetupPreview" style="display:none"></div>
+        <button class="btn btn-solid-sage" onclick="generatePlanningProposals()" style="width:100%;justify-content:center;padding:11px 16px;font-size:14px">Générer les propositions →</button>
+      </div>
+    </div>
+    <!-- Step 2: Proposals -->
+    <div class="pm-body" id="planningBody" style="display:none"></div>
+    <div id="planningFooter" style="padding:0 20px 24px;display:none;gap:8px">
+      <button class="btn" onclick="backToPlanningSetup()">← Modifier les dates</button>
+      <button class="btn btn-solid-sage" onclick="validatePlanning()" style="flex:1;justify-content:center">Valider le planning ✓</button>
+      <button class="btn" onclick="closeModal('planningModal')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   GOOGLE SHEETS PERSISTENCE
+═══════════════════════════════════════════ */
+const API_URL = 'https://script.google.com/macros/s/AKfycbzv-0zrrZdH4lbTu50ItnqKWbgEPT1ZOPnqgobujevgMp-dVDSvBwxKcYyWn_XOOyXcBA/exec';
+
+let _saveTimeout = null;
+let _isSaving = false;
+
+function showSync(mode, msg){
+  const t = document.getElementById('syncToast');
+  t.className = 'sync-toast ' + mode;
+  t.textContent = msg;
+  if(mode === 'saved'){
+    setTimeout(()=>{ t.className = 'sync-toast'; }, 2000);
+  }
+}
+
+function getSavePayload(){
+  return {
+    mealDone: S.mealDone,
+    mealEdits: S.mealEdits,
+    mealSwaps: S.mealSwaps,
+    mealReported: S.mealReported,
+    dlc: S.dlc,
+    coursesChecked: S.coursesChecked,
+    coursesCustom: S.coursesCustom,
+    menagePinned: S.menagePinned,
+    menageDone: S.menageDone,
+    nextWeekValidated: S.nextWeekValidated,
+    displacedMeals: S.displacedMeals,
+    extraMeals: S.extraMeals
+  };
+}
+
+function saveState(){
+  // Debounce: wait 800ms after last change before saving
+  clearTimeout(_saveTimeout);
+  _saveTimeout = setTimeout(_doSave, 800);
+}
+
+async function _doSave(){
+  if(_isSaving) return;
+  _isSaving = true;
+  showSync('saving', '💾 Sauvegarde…');
+  try {
+    const resp = await fetch(API_URL, {
+      method: 'POST',
+      headers: {'Content-Type':'text/plain'},
+      body: JSON.stringify(getSavePayload())
+    });
+    const data = await resp.json();
+    if(data.success){
+      showSync('saved', '✅ Sauvegardé');
+    } else {
+      showSync('error', '❌ Erreur sauvegarde');
+      console.error('Save error:', data);
+    }
+  } catch(e){
+    showSync('error', '❌ Hors ligne');
+    console.error('Save failed:', e);
+    // Store locally as fallback
+    try { localStorage.setItem('foyer_backup', JSON.stringify(getSavePayload())); } catch(x){}
+  }
+  _isSaving = false;
+}
+
+async function loadState(){
+  try {
+    const resp = await fetch(API_URL + '?action=load');
+    const data = await resp.json();
+    if(data.success && data.state){
+      const st = data.state;
+      if(st.mealDone) S.mealDone = st.mealDone;
+      if(st.mealEdits) S.mealEdits = st.mealEdits;
+      if(st.mealSwaps) S.mealSwaps = st.mealSwaps;
+      if(st.mealReported) S.mealReported = st.mealReported;
+      if(st.dlc) S.dlc = st.dlc;
+      if(st.coursesChecked) S.coursesChecked = st.coursesChecked;
+      if(st.coursesCustom) S.coursesCustom = st.coursesCustom;
+      if(st.menagePinned) S.menagePinned = st.menagePinned;
+      if(st.menageDone) S.menageDone = st.menageDone;
+      if(st.nextWeekValidated) S.nextWeekValidated = st.nextWeekValidated;
+      if(st.displacedMeals) S.displacedMeals = st.displacedMeals;
+      if(st.extraMeals) S.extraMeals = st.extraMeals;
+      return true;
+    }
+  } catch(e){
+    console.warn('Load from GSheet failed, trying local backup:', e);
+    // Try local backup
+    try {
+      const backup = localStorage.getItem('foyer_backup');
+      if(backup){
+        const st = JSON.parse(backup);
+        Object.keys(st).forEach(k => { if(st[k] && S.hasOwnProperty(k)) S[k] = st[k]; });
+        return true;
+      }
+    } catch(x){}
+  }
+  return false;
+}
+
+/* ═══════════════════════════════════════════
+   DONNÉES
+═══════════════════════════════════════════ */
+const TODAY_STR = '2026-03-10'; // simulé
+const TODAY = new Date(TODAY_STR);
+
+const DAYS_DATA = [
+  { date:'2026-03-06', short:'Ven', num:'06', name:'Vendredi', meals:[
+    { id:'v6m', moment:'Midi', icon:'🥗', name:'Taboulé & charcuterie', time:'5 min', who:[{cls:'duo',l:'Duo'}], hasMeat:false,
+      items:[{t:'Taboulé orientale 500g + jambon Le Bon Paris'},{t:'Feuille de chêne + oignon rouge'},{tip:'Repas sans cuisson — les courses viennent d\'arriver !'}]},
+    { id:'v6s', moment:'Soir', icon:'🛵', name:'Commande extérieure 🎉', time:'—', who:[{cls:'fam',l:'Famille'},{cls:'ext',l:'Livraison'}], hasMeat:false, noSkip:true,
+      items:[{t:'Vendredi soir = jour off total !'},{tip:'Pizzas surgelées passeront samedi midi 🍕'}]}
+  ]},
+  { date:'2026-03-07', short:'Sam', num:'07', name:'Samedi', meals:[
+    { id:'s7m', moment:'Midi', icon:'🤷', name:'Chacun se débrouille', time:'—', who:[{cls:'lib',l:'Libre'}], hasMeat:false, noSkip:true,
+      items:[{t:'Pain de mie + Boursin / Vache qui rit / Jambon'},{tip:'Vider les restes du frigo'}]},
+    { id:'s7s', moment:'Soir', icon:'🍋', name:'Poulet citronnelle — recette viêt', time:'35 min', who:[{cls:'fam',l:'Famille'},{cls:'tm6',l:'TM6'}], hasMeat:true, meatLabel:'Cuisses poulet Maître Coq',
+      items:[{t:'Cuisses de poulet Maître Coq 1,4 kg marinées citronnelle'},{t:'Riz basmati (stock maison ✅)', swap:true, swapLabel:'Riz basmati'},{t:'Oignon rouge + citron'},{tip:'TM6 : faire revenir puis mijoter. Fish sauce + citronnelle + ail + sucre de palme'}],
+      warn:'⚠️ Citronnelle fraîche, fish sauce et ail — vérifie ton stock !',
+      fallback:['Saucisses Knacki + purée Mousline (15 min)','Nuggets air fryer + Patato Pops (20 min)','Poulet rôti au four + légumes (45 min)']}
+  ]},
+  { date:'2026-03-08', short:'Dim', num:'08', name:'Dimanche', meals:[
+    { id:'d8m', moment:'Midi', icon:'🍗', name:'Tenders croustillants Air Fryer', time:'20 min', who:[{cls:'fam',l:'Famille'},{cls:'af',l:'Air Fryer'}], hasMeat:true, meatLabel:'Tenders poulet crusty',
+      items:[{t:'Tenders filet poulet crusty Maître Coq 380g'},{t:'Patato Pops McCain'},{tip:'Air fryer 180°C — 15 min'}],
+      fallback:['Pain de mie + fromages + jambon','Coquillettes beurre + emmental (15 min)']},
+    { id:'d8s', moment:'Soir', icon:'🫕', name:'Lasagnes maison', time:'1h', who:[{cls:'fam',l:'Famille'},{cls:'tm6',l:'TM6'}], hasMeat:true, meatLabel:'Viande hachée 500g',
+      items:[{t:'Viande hachée 500g · sauce tomate · ail oignons'},{t:'Feuilles de lasagnes (stock)'},{t:'Béchamel rapide + emmental gratiné'},{tip:'TM6 : bolognaise mijotée'}],
+      fallback:['Spaghetti sauce tomate + emmental (15 min)','Omelette + toast Boursin (10 min)']}
+  ]},
+  { date:'2026-03-09', short:'Lun', num:'09', name:'Lundi', meals:[
+    { id:'l9m', moment:'Midi', icon:'🐟', name:'Pavés de saumon & avocat-citron', time:'15 min', who:[{cls:'duo',l:'Duo'},{cls:'af',l:'Air Fryer'}], hasMeat:true, meatLabel:'Pavés saumon Gimbert',
+      items:[{t:'Pavés de saumon Gimbert Océan 400g — air fryer 12 min'},{t:'Avocats ×2 · citron + oignon rouge'},{tip:'Air fryer 200°C — croustillant dehors, fondant dedans 🤤'}],
+      fallback:['Spaghetti pesto (15 min)','Taboulé + jambon (5 min)']},
+    { id:'l9s', moment:'Soir', icon:'🌯', name:'Burritos Old El Paso', time:'25 min', who:[{cls:'fam',l:'Famille'},{cls:'af',l:'Air Fryer'}], hasMeat:true, meatLabel:'Viande hachée 500g',
+      items:[{t:'Kit Burritos Old El Paso · tortillas + épices'},{t:'Viande hachée 500g + guacamole + avocat'},{t:'Emmental rapé + Vache qui rit cheddar'},{tip:'Chacun garnit son burrito 🎉'}],
+      fallback:['Cordons bleus air fryer + coquillettes (25 min)','Saucisses Knacki + purée (15 min)']}
+  ]},
+  { date:'2026-03-10', short:'Mar', num:'10', name:'Mardi', meals:[
+    { id:'ma10m', moment:'Midi', icon:'🍝', name:'Spaghetti pesto rosso', time:'15 min', who:[{cls:'duo',l:'Duo'}], hasMeat:false,
+      items:[{t:'Spaghetti Barilla n°5 + sauce pesto rosso 200g'},{t:'Emmental rapé + poivre', swap:true, swapLabel:'Emmental rapé'},{tip:'15 min chrono !'}],
+      fallback:['Omelette + toast Boursin (10 min)','Taboulé + jambon (5 min)']},
+    { id:'ma10s', moment:'Soir', icon:'🐔', name:'Poulet entier rôti au TM6', time:'50 min', who:[{cls:'fam',l:'Famille'},{cls:'tm6',l:'TM6'}], hasMeat:true, meatLabel:'Poulet entier Maître Coq 1,4kg',
+      items:[{t:'Poulet entier Maître Coq Graine de Lin 1,4 kg'},{t:'Purée Mousline — onctueuse au beurre', swap:true, swapLabel:'Purée Mousline'},{t:'Salade feuille de chêne'},{tip:'TM6 : arroser de jus à mi-cuisson'}],
+      fallback:['Saucisses Knacki + purée Mousline (15 min)','Nuggets air fryer + Patato Pops (20 min)']}
+  ]},
+  { date:'2026-03-11', short:'Mer', num:'11', name:'Mercredi', meals:[
+    { id:'me11m', moment:'Midi', icon:'🥚', name:'Omelette moelleuse & toast Boursin', time:'10 min', who:[{cls:'duo',l:'Duo'}], hasMeat:false,
+      items:[{t:'3-4 œufs + herbes · cuisson douce'},{t:'Pain de mie toasté + Boursin ail & fines herbes'},{tip:'Le midi le plus rapide de la semaine 🏆'}],
+      fallback:['Spaghetti beurre + emmental (15 min)','Pain de mie + jambon + fromage (0 cuisson)']},
+    { id:'me11s', moment:'Soir', icon:'🍛', name:'Poulet curry lait de coco — TM6', time:'30 min', who:[{cls:'fam',l:'Famille'},{cls:'tm6',l:'TM6'}], hasMeat:true, meatLabel:'Filets poulet blanc Le Gaulois 720g',
+      items:[{t:'Filets de poulet blanc Le Gaulois 720g en dés'},{t:'Sauce curry légumes & lait de coco Rustica 400g'},{t:'Riz basmati (stock ✅)', swap:true, swapLabel:'Riz basmati'},{tip:'TM6 : sauté → mijoter 20 min'}],
+      warn:'⚠️ Riz non inclus — vérifie ton stock !',
+      fallback:['Spaghetti sauce tomate (15 min)','Cordons bleus + coquillettes (25 min)']}
+  ]},
+  { date:'2026-03-12', short:'Jeu', num:'12', name:'Jeudi', meals:[
+    { id:'j12m', moment:'Midi', icon:'♻️', name:'Restes curry ou taboulé', time:'5 min', who:[{cls:'duo',l:'Duo'}], hasMeat:false,
+      items:[{t:'Restes poulet curry + riz réchauffé'},{t:'Alternative : taboulé + jambon si pas de restes'},{tip:'Zéro effort — profite !'}],
+      fallback:['Œufs à la coque + mouillettes (10 min)','Spaghetti beurre (15 min)']},
+    { id:'j12s', moment:'Soir', icon:'🧀', name:'Cordons bleus & coquillettes', time:'25 min', who:[{cls:'fam',l:'Famille'},{cls:'af',l:'Air Fryer'}], hasMeat:true, meatLabel:'Cordons bleus poulet Maître Coq 1kg',
+      items:[{t:'Cordons bleus poulet Maître Coq 1kg — air fryer 15 min'},{t:'Coquillettes + beurre + emmental fondu', swap:true, swapLabel:'Coquillettes'},{tip:'Air fryer 180°C — les enfants adorent !'}],
+      fallback:['Nuggets + Patato Pops (20 min)','Saucisses Knacki + purée (15 min)']}
+  ]},
+  { date:'2026-03-13', short:'Ven', num:'13', name:'Vendredi', meals:[
+    { id:'v13m', moment:'Midi', icon:'🥪', name:'Sandwich rapide express', time:'5 min', who:[{cls:'duo',l:'Duo'}], hasMeat:false, noSkip:true,
+      items:[{t:'Pain de mie + Boursin ou Vache qui rit + jambon'},{t:'Noix de cajou + raisin blanc en en-cas'},{tip:'Midi sans effort — soirée commande ce soir 🎉'}]},
+    { id:'v13s', moment:'Soir', icon:'🛵', name:'Commande extérieure 🎉', time:'—', who:[{cls:'fam',l:'Famille'},{cls:'ext',l:'Livraison'}], hasMeat:false, noSkip:true,
+      items:[{t:'Soirée libre — pizza, burger, sushis, thai...'},{tip:'Le rendez-vous hebdomadaire 🥂'}]}
+  ]},
+  { date:'2026-03-14', short:'Sam', num:'14', name:'Samedi', meals:[
+    { id:'s14m', moment:'Midi', icon:'🤷', name:'Chacun se débrouille', time:'—', who:[{cls:'lib',l:'Libre'}], hasMeat:false, noSkip:true,
+      items:[{t:'Pizzas Delamama — air fryer 12 min à 180°C'},{t:'Fromages + pain de mie'}]},
+    { id:'s14s', moment:'Soir', icon:'🍗', name:'Nuggets & spaghetti sauce tomate', time:'20 min', who:[{cls:'fam',l:'Famille'},{cls:'af',l:'Air Fryer'}], hasMeat:true, meatLabel:'Nuggets poulet Maître Coq 1kg',
+      items:[{t:'Nuggets de poulet Maître Coq 1kg — air fryer 12 min'},{t:'Spaghetti + sauce tomate + ail oignons Panzani', swap:true, swapLabel:'Spaghetti'},{t:'Emmental rapé'}],
+      fallback:['Cordons bleus + coquillettes (25 min)','Coquillettes beurre + emmental (15 min)']}
+  ]},
+  { date:'2026-03-15', short:'Dim', num:'15', name:'Dimanche', meals:[
+    { id:'d15m', moment:'Midi', icon:'🫙', name:'Raviolis gratinés au four', time:'20 min', who:[{cls:'fam',l:'Famille'}], hasMeat:false,
+      items:[{t:'Raviolis Côté Table 6 légumes 800g'},{t:'Sauce tomate + emmental → gratin 15 min'},{tip:'Un gratin du dimanche — tout le monde se ressert !'}],
+      fallback:['Spaghetti sauce tomate + emmental (15 min)','Omelette + toast Boursin (10 min)']},
+    { id:'d15s', moment:'Soir', icon:'🍝', name:'Poulet & serpentini sauce tomate', time:'30 min', who:[{cls:'fam',l:'Famille'},{cls:'tm6',l:'TM6'}], hasMeat:true, meatLabel:'Filets poulet blanc Le Gaulois 720g',
+      items:[{t:'Filets de poulet blanc 720g — TM6 sauce tomate'},{t:'Serpentini Panzani + pulpe de tomate', swap:true, swapLabel:'Serpentini'},{t:'Emmental rapé + huile d\'olive'},{tip:'Dernier dîner avant la reprise ✨'}],
+      fallback:['Cordons bleus + coquillettes (25 min)','Nuggets + purée (20 min)']}
+  ]}
+];
+
+const COURSES_DATA = [
+  { rayon:'🍗 Viandes & Protéines', color:'rose', icon:'🍗', items:[
+    {n:'Cuisses de poulet Maître Coq',q:'1,4 kg'},{n:'Poulet entier Maître Coq Graine de Lin',q:'1,4 kg'},
+    {n:'Filets de poulet blanc Le Gaulois',q:'720g × 2'},{n:'Tenders filet poulet crusty',q:'380g'},
+    {n:'Cordons bleus poulet Maître Coq',q:'1 kg'},{n:'Nuggets de poulet Maître Coq',q:'1 kg'},
+    {n:'Pavés de saumon Gimbert Océan',q:'400g'},{n:'Viande hachée bœuf 5%',q:'500g × 2'},
+    {n:'Jambon Le Bon Paris',q:'×4 tranches × 2'}]},
+  { rayon:'🧀 Produits laitiers & Œufs', color:'gold', icon:'🧀', items:[
+    {n:'Emmental rapé',q:'500g'},{n:'Boursin ail & fines herbes',q:'× 2'},{n:'Vache qui rit cheddar',q:'× 1'},
+    {n:'Beurre doux',q:'250g'},{n:'Œufs fermiers',q:'× 12'},{n:'Crème fraîche entière',q:'1 brique'}]},
+  { rayon:'🥬 Fruits & Légumes', color:'sage', icon:'🥬', items:[
+    {n:'Avocats',q:'× 4'},{n:'Oignons rouges',q:'× 4'},{n:'Ail (têtes)',q:'× 2'},
+    {n:'Citrons',q:'× 4'},{n:'Feuille de chêne',q:'× 2'},{n:'Raisin blanc',q:'1 grappe'}]},
+  { rayon:'🍝 Épicerie & Féculents', color:'sky', icon:'🍝', items:[
+    {n:'Riz basmati',q:'',c:'⚠️ Vérifier stock 5kg maison'},{n:'Spaghetti Barilla n°5',q:'× 2'},
+    {n:'Coquillettes Panzani',q:'× 1'},{n:'Serpentini Panzani',q:'× 1'},{n:'Raviolis Côté Table 6 légumes',q:'800g'},
+    {n:'Purée Mousline',q:'× 2 sachets'},{n:'Sauce pesto rosso Barilla',q:'200g'},
+    {n:'Sauce curry légumes & lait de coco Rustica',q:'400g'},{n:'Pulpe de tomate',q:'× 4 boîtes'},
+    {n:'Kit Burritos Old El Paso',q:'× 1'},{n:'Taboulé orientale',q:'500g'},{n:'Noix de cajou',q:'100g'}]},
+  { rayon:'🥖 Boulangerie', color:'peach', icon:'🥖', items:[{n:'Pain de mie',q:'× 2 paquets'}]},
+  { rayon:'❄️ Surgelés', color:'sky', icon:'❄️', items:[
+    {n:'Patato Pops McCain',q:'× 2 sachets'},{n:'Pizzas Delamama Thono + Jambonito',q:'× 2'}]},
+  { rayon:'🐾 Animaux', color:'lav', icon:'🐾', items:[
+    {n:'Litière chats',q:'',c:'À vérifier stock'},{n:'Croquettes chats',q:'',c:'À vérifier stock'},
+    {n:'Nourriture tortue aquatique',q:'',c:'À vérifier stock'}]},
+  { rayon:'🧹 Entretien', color:'gold', icon:'🧹', items:[
+    {n:'Vinaigre blanc ménager',q:'',c:'À vérifier stock'},{n:'Sacs poubelle',q:'2 rouleaux'},{n:'Éponges',q:'× 1 lot'}]}
+];
+
+const MENAGE_TACHES = [
+  {id:'m1',p:'🍽️ Cuisine',t:'Vider et nettoyer le réfrigérateur',tip:'Eau + vinaigre blanc, retirer tous les bacs'},
+  {id:'m2',p:'🍽️ Cuisine',t:'Nettoyer le four (intérieur + grilles)'},
+  {id:'m3',p:'🍽️ Cuisine',t:'Dégraisser plaque de cuisson + hotte'},
+  {id:'m4',p:'🍽️ Cuisine',t:'Nettoyer micro-ondes intérieur et extérieur'},
+  {id:'m5',p:'🍽️ Cuisine',t:'Détartrer bouilloire et cafetière'},
+  {id:'m6',p:'🍽️ Cuisine',t:'Surfaces, crédences et meubles hauts'},
+  {id:'m7',p:'🍽️ Cuisine',t:'Poubelle — vider, désinfecter, reliner'},
+  {id:'m8',p:'🍽️ Cuisine',t:'Balai + laver le sol cuisine'},
+  {id:'m9',p:'🛋️ Salon',t:'Dépoussiérer meubles, étagères, TV, déco'},
+  {id:'m10',p:'🛋️ Salon',t:'Nettoyer vitres et fenêtres'},
+  {id:'m11',p:'🛋️ Salon',t:'Aspirateur canapé + coussins'},
+  {id:'m12',p:'🛋️ Salon',t:'Plinthes et interrupteurs'},
+  {id:'m13',p:'🛋️ Salon',t:'Aspirateur sol (coins + sous les meubles)'},
+  {id:'m14',p:'🛋️ Salon',t:'Laver le sol salon / séjour'},
+  {id:'m15',p:'🛋️ Salon',t:'Ranger et désencombrer (papiers, câbles...)'},
+  {id:'m16',p:'🚿 Salle de bain 1',t:'Récurer douche / baignoire + joints'},
+  {id:'m17',p:'🚿 Salle de bain 1',t:'Désinfecter toilettes (cuvette + abattant + extérieur)'},
+  {id:'m18',p:'🚿 Salle de bain 1',t:'Lavabo et robinetterie',tip:'Citron sur le tartre'},
+  {id:'m19',p:'🚿 Salle de bain 1',t:'Miroir + sol + poubelle'},
+  {id:'m20',p:'🚿 Salle de bain 2',t:'Récurer douche / baignoire + joints'},
+  {id:'m21',p:'🚿 Salle de bain 2',t:'Désinfecter toilettes'},
+  {id:'m22',p:'🚿 Salle de bain 2',t:'Lavabo, robinetterie, miroir'},
+  {id:'m23',p:'🚿 Salle de bain 2',t:'Sol + poubelle + trier produits périmés'},
+  {id:'m24',p:'🛏️ Chambre principale',t:'Laver draps + housse de couette',tip:'Lancer la machine en commençant'},
+  {id:'m25',p:'🛏️ Chambre principale',t:'Retourner et aérer le matelas',delegate:'Ado (14 ans) peut aider'},
+  {id:'m26',p:'🛏️ Chambre principale',t:'Dépoussiérer meubles, cadres, lampes'},
+  {id:'m27',p:'🛏️ Chambre principale',t:'Miroirs, vitres, désencombrer tables de chevet'},
+  {id:'m28',p:'🛏️ Chambre principale',t:'Aspirateur sol + laver le sol + refaire le lit ✨'},
+  {id:'m29',p:'🛏️ Chambre 2',t:'Changer draps + taies',delegate:'Ado (14 ans) — sa chambre'},
+  {id:'m30',p:'🛏️ Chambre 2',t:'Dépoussiérer + aspirateur + laver sol'},
+  {id:'m31',p:'🛏️ Chambre 3',t:'Changer draps + taies',delegate:'Enfants (9 et 10 ans) peuvent aider'},
+  {id:'m32',p:'🛏️ Chambre 3',t:'Dépoussiérer + aspirateur + laver sol'},
+  {id:'m33',p:'🏠 Entrée & Couloir',t:'Ranger chaussures et vêtements d\'entrée'},
+  {id:'m34',p:'🏠 Entrée & Couloir',t:'Dépoussiérer meubles d\'entrée + miroir'},
+  {id:'m35',p:'🏠 Entrée & Couloir',t:'Aspirateur + laver le sol couloir'},
+  {id:'m36',p:'✨ Finitions',t:'Nettoyer toutes les poignées de portes'},
+  {id:'m37',p:'✨ Finitions',t:'Désinfecter téléphones, télécommandes, interrupteurs'},
+  {id:'m38',p:'✨ Finitions',t:'Vider et nettoyer poubelles de chaque pièce'},
+  {id:'m39',p:'✨ Finitions',t:'Ranger et plier tout le linge propre'},
+  {id:'m40',p:'✨ Finitions',t:'Bougies / diffuseur 🕯️'},
+  {id:'m41',p:'🐱 Chats',t:'Nettoyer et changer la litière (×2 chats)',tip:'Tous les 2-3 jours minimum'},
+  {id:'m42',p:'🐱 Chats',t:'Laver les gamelles nourriture + eau'},
+  {id:'m43',p:'🐱 Chats',t:'Aspirer les zones de couchage'},
+  {id:'m44',p:'🐢 Tortue aquatique',t:'Changer partiellement l\'eau (20-25%)',tip:'Eau décantée ou traitée'},
+  {id:'m45',p:'🐢 Tortue aquatique',t:'Nettoyer les parois de l\'aquarium'},
+  {id:'m46',p:'🐢 Tortue aquatique',t:'Vérifier filtre et lampe UV'}
+];
+
+const NEXT_WEEK_PROPOSALS = [
+  { date:'2026-03-16', num:'16', name:'Lundi', meals:[
+    {moment:'Midi',icon:'🥗',text:'Salade niçoise express',time:'10 min'},
+    {moment:'Soir',icon:'🍝',text:'Gratin de pâtes au jambon & béchamel',time:'35 min'}]},
+  { date:'2026-03-17', num:'17', name:'Mardi', meals:[
+    {moment:'Midi',icon:'🥚',text:'Œufs brouillés & toast Boursin',time:'10 min'},
+    {moment:'Soir',icon:'🍗',text:'Escalopes de poulet au citron & riz',time:'25 min'}]},
+  { date:'2026-03-18', num:'18', name:'Mercredi', meals:[
+    {moment:'Midi',icon:'🍝',text:'Coquillettes jambon + emmental',time:'15 min'},
+    {moment:'Soir',icon:'🫕',text:'Pot-au-feu de poulet TM6',time:'50 min'}]},
+  { date:'2026-03-19', num:'19', name:'Jeudi', meals:[
+    {moment:'Midi',icon:'♻️',text:'Restes pot-au-feu ou soupe',time:'5 min'},
+    {moment:'Soir',icon:'🌯',text:'Wraps mexicains poulet & avocat',time:'20 min'}]},
+  { date:'2026-03-20', num:'20', name:'Vendredi', meals:[
+    {moment:'Midi',icon:'🥪',text:'Sandwich jambon-crudités',time:'5 min'},
+    {moment:'Soir',icon:'🛵',text:'Commande extérieure 🎉',time:'—'}]},
+  { date:'2026-03-21', num:'21', name:'Samedi', meals:[
+    {moment:'Midi',icon:'🤷',text:'Chacun se débrouille',time:'—'},
+    {moment:'Soir',icon:'🍛',text:'Curry de légumes TM6 & riz',time:'30 min'}]},
+  { date:'2026-03-22', num:'22', name:'Dimanche', meals:[
+    {moment:'Midi',icon:'🥩',text:'Steak haché + frites air fryer',time:'20 min'},
+    {moment:'Soir',icon:'🍝',text:'Lasagnes de la semaine passée (congelées)',time:'30 min'}]}
+];
+
+const SWAP_SUGGESTIONS = {
+  'Riz basmati':   ['Riz blanc','Semoule de couscous','Quinoa','Pâtes courtes'],
+  'Emmental rapé': ['Gruyère rapé','Comté râpé','Parmesan','Chèvre émietté'],
+  'Purée Mousline':['Riz blanc','Tagliatelles','Haricots verts','Salade verte'],
+  'Coquillettes':  ['Spaghetti','Penne','Riz blanc','Purée Mousline'],
+  'Serpentini':    ['Spaghetti','Penne','Tagliatelles','Riz blanc']
+};
+
+const BADGE_COLORS = {
+  duo:  ['#E8F2F8','#4A6E8A'], fam:  ['#EAF3EE','#4A7A5A'],
+  ext:  ['#F0ECFA','#7A5AAA'], lib:  ['#F8F2E0','#8A6A1A'],
+  tm6:  ['#FAF0E8','#8A5A3A'], af:   ['#F5F2EE','#6A6058']
+};
+
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+const S = {
+  activeDayIdx: 0,
+  mealDone: {},       // itemKey (mealId-ii) → bool
+  mealReported: {},   // itemKey → bool
+  mealEdits: {},      // mealId → {name, items}
+  mealSwaps: {},      // mealId-field → newValue
+  dlc: {},            // mealId → dateStr
+  coursesChecked: {}, // rayonIdx-itemIdx → bool
+  coursesCustom: [],  // {rayon, name, qty}
+  menagePinned: {},
+  menageDone: {},
+  replacerItems: [],  // [{itemKey, label, icon, fromDate, fromName, mealId}]
+  displacedMeals: [], // [{meal, fromDay, fromDate, fromSlot}] - meals displaced by collision
+  reportTarget: null, // {mealId, dayDate, meal}
+  reportSelectedSlot: null, // {dayDate, slot, occupiedMealId}
+  reportSelectedDay: null,
+  reportSelectedMoment: null,
+  dlcTarget: null,
+  dlcSelectedDay: null,
+  nextWeekValidated: {},
+  extraMeals: {}      // date → [{icon,name,moment,fromLabel}] injected reported meals
+};
+
+/* ═══════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════ */
+const $ = sel => document.querySelector(sel);
+const $$ = sel => document.querySelectorAll(sel);
+function el(tag,cls,html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html)e.innerHTML=html; return e; }
+function isPast(dateStr){ return new Date(dateStr) < TODAY; }
+function isToday(dateStr){ return dateStr === TODAY_STR; }
+function parseDate(s){ return new Date(s+'T00:00:00'); }
+function diffDays(a,b){ return Math.ceil((parseDate(a)-parseDate(b))/(86400000)); }
+function getMeal(id){ for(const d of DAYS_DATA) for(const m of d.meals) if(m.id===id) return m; return null; }
+function getMealDay(id){ for(const d of DAYS_DATA) if(d.meals.find(m=>m.id===id)) return d; return null; }
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+function switchTab(tab){
+  $$('.page').forEach(p=>p.classList.remove('active'));
+  $$('.nav-tab').forEach(t=>t.classList.remove('active'));
+  $(`#page-${tab}`).classList.add('active');
+  $(`.nav-tab[data-tab="${tab}"]`).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ═══════════════════════════════════════════
+   BUILD REPAS
+═══════════════════════════════════════════ */
+function buildRepas(){
+  buildWeekNav();
+  // Find today index
+  const todayIdx = DAYS_DATA.findIndex(d=>d.date===TODAY_STR);
+  S.activeDayIdx = todayIdx >= 0 ? todayIdx : 0;
+  renderWeekNav();
+  renderDay();
+  renderReplacerZone();
+}
+
+function buildWeekNav(){
+  const nav = $('#weekNav');
+  nav.innerHTML = '';
+  DAYS_DATA.forEach((day,i)=>{
+    const btn = el('button','wday');
+    if(isPast(day.date) && !isToday(day.date)) btn.classList.add('past');
+    if(isToday(day.date)) btn.classList.add('today');
+    btn.innerHTML = `<span class="wday-name">${day.short}</span><span class="wday-num">${day.num}</span><span class="wday-dot"></span>`;
+    btn.onclick = ()=>{ S.activeDayIdx=i; renderWeekNav(); renderDay(); };
+    nav.appendChild(btn);
+  });
+}
+
+function renderWeekNav(){
+  $$('.wday').forEach((b,i)=>{
+    b.classList.toggle('active', i===S.activeDayIdx);
+    // pending dot
+    const day = DAYS_DATA[i];
+    const hasPending = day.meals.some(m => isPast(day.date) && !isToday(day.date) && !S.mealDone[m.id] && !m.noSkip);
+    b.classList.toggle('has-pending', hasPending);
+  });
+}
+
+function renderDay(){
+  const day = DAYS_DATA[S.activeDayIdx];
+  const container = $('#dayContent');
+  container.innerHTML = '';
+
+  // Past info banner
+  if(isPast(day.date) && !isToday(day.date)){
+    const info = el('div','alert-box info',`ℹ️ <span>Journée passée — les repas non cochés sont disponibles à replacer.</span>`);
+    info.style.marginBottom = '12px';
+    container.appendChild(info);
+  }
+
+  day.meals.forEach(meal => renderMealCard(meal, day, container));
+
+  // Extra meals inserted by reporter
+  (S.extraMeals[day.date]||[]).forEach(meal => renderMealCard(meal, day, container));
+}
+
+function renderMealCard(meal, day, container){
+  const past = isPast(day.date) && !isToday(day.date);
+  // A meal is fully "done" if ALL its non-tip, non-noSkip items are checked
+  const realItems = meal.items.filter(it=>!it.tip);
+  const allItemsDone = realItems.length > 0 && realItems.every((_,ii)=>S.mealDone[`${meal.id}-${ii}`]);
+
+  const card = el('div','meal-card');
+  if(allItemsDone) card.classList.add('done-card');
+  if(past && !allItemsDone && !meal.noSkip) card.classList.add('past-undone');
+  card.id = `mcard-${meal.id}`;
+
+  // Badges
+  const badgesHtml = meal.who.map(w=>{
+    const [bg,col]=BADGE_COLORS[w.cls]||['#eee','#666'];
+    return `<span class="badge" style="background:${bg};color:${col}">${w.l}</span>`;
+  }).join('');
+
+  // Meal top
+  const topDiv = el('div','meal-top');
+  topDiv.innerHTML = `
+    <div class="ipill" style="background:var(--sage-bg);font-size:18px">${meal.icon}</div>
+    <div style="flex:1">
+      <div class="meal-moment">${meal.moment}</div>
+      <div class="meal-name" id="mname-${meal.id}">${S.mealEdits[meal.id]?.name || meal.name}</div>
+      <div class="meal-badges">${badgesHtml}</div>
+    </div>
+    <div class="meal-time">⏱ ${meal.time||'—'}</div>
+  `;
+  card.appendChild(topDiv);
+
+  const divider = el('div','meal-divider'); card.appendChild(divider);
+
+  // Items — each one is independently checkable (✓ fait) or reportable (🔄)
+  const detailsDiv = el('div','meal-details');
+  const currentItems = S.mealEdits[meal.id]?.items || meal.items;
+
+  currentItems.forEach((it, ii)=>{
+    if(it.tip){
+      detailsDiv.innerHTML += `<div class="meal-detail tip-row">💡 ${it.tip}</div>`;
+      return;
+    }
+
+    const itemKey = `${meal.id}-${ii}`;
+    const isDone = !!S.mealDone[itemKey];
+    const isReported = !!S.mealReported[itemKey];
+
+    const row = el('div','meal-item-row');
+    row.id = `irow-${itemKey}`;
+    row.style.cssText = 'display:flex;align-items:flex-start;gap:8px;padding:4px 0;'+(isDone?'opacity:.4':'');
+
+    // Content
+    let contentHtml;
+    if(it.swap){
+      const current = S.mealSwaps[`${meal.id}-${it.swapLabel}`] || it.swapLabel;
+      contentHtml = `<span>${it.t.replace(it.swapLabel,'')}<span class="swap-pill" style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:var(--sky-bg);border:1.5px solid var(--sky-mid);border-radius:99px;font-size:11.5px;font-weight:600;color:var(--sky);cursor:pointer" onclick="openSwapPicker('${meal.id}','${it.swapLabel}',this)">${current} ⇄</span></span>`;
+    } else {
+      contentHtml = `<span style="${isDone?'text-decoration:line-through':''}">${it.t}</span>`;
+    }
+
+    // Status indicator
+    let statusHtml = '';
+    if(isReported){
+      statusHtml = `<span style="font-size:10px;background:var(--gold-bg);border:1px solid var(--gold-mid);color:var(--gold);border-radius:99px;padding:1px 7px;white-space:nowrap;flex-shrink:0;margin-top:3px">🔄 Reporté</span>`;
+    }
+
+    row.innerHTML = `
+      <div class="dd ${it.swap?'gold':''}" style="margin-top:6px;flex-shrink:0"></div>
+      <div style="flex:1;font-size:13.5px;line-height:1.4">${contentHtml}</div>
+      ${statusHtml}
+      ${!meal.noSkip && !isDone && !isReported ? `
+        <div style="display:flex;gap:4px;flex-shrink:0;margin-top:1px">
+          <button onclick="toggleItemDone('${itemKey}','${meal.id}','${day.date}')" title="Fait" style="font-size:13px;padding:3px 8px;border-radius:99px;border:1.5px solid var(--sage-mid);background:var(--sage-bg);color:var(--sage);cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap">✓</button>
+          ${past?`<button onclick="openItemReportModal('${itemKey}','${it.t.slice(0,30).replace(/'/g,"\\'")}','${meal.icon}','${meal.id}')" title="Reporter" style="font-size:12px;padding:3px 8px;border-radius:99px;border:1.5px solid var(--rose-mid);background:var(--rose-bg);color:var(--rose);cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap">🔄</button>`:''}
+        </div>
+      ` : (!meal.noSkip && isDone ? `<button onclick="undoItemDone('${itemKey}','${meal.id}','${day.date}')" title="Annuler" style="font-size:11px;padding:2px 7px;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;font-family:inherit;flex-shrink:0;margin-top:2px">↩</button>` : '')}
+    `;
+    detailsDiv.appendChild(row);
+  });
+
+  // DLC inline
+  if(meal.hasMeat){
+    const dlcVal = S.dlc[meal.id];
+    let dlcCls = 'dlc-inline', dlcTxt;
+    if(dlcVal){
+      const diff = diffDays(dlcVal, day.date);
+      if(diff >= 0){ dlcCls+=' has-dlc ok'; dlcTxt=`📅 DLC ${dlcVal} — ✅ OK (${diff}j de marge)`; }
+      else { dlcCls+=' has-dlc danger'; dlcTxt=`📅 DLC ${dlcVal} — ⚠️ Trop tard ! Voir suggestions`; }
+    } else {
+      dlcTxt = `📅 Saisir la DLC — ${meal.meatLabel}`;
+    }
+    const dlcEl = el('div', dlcCls, dlcTxt);
+    dlcEl.style.marginTop = '8px';
+    dlcEl.onclick = ()=>openDlcModal(meal.id);
+    detailsDiv.appendChild(dlcEl);
+  }
+
+  card.appendChild(detailsDiv);
+
+  // Warn
+  if(meal.warn){
+    const w = el('div','alert-box warn',`⚠️ <span>${meal.warn}</span>`);
+    w.style.margin='0 16px 10px';
+    card.appendChild(w);
+  }
+
+  // Edit panel
+  if(!meal.noSkip){
+    const editPanel = buildEditPanel(meal);
+    card.appendChild(editPanel);
+
+    // Action buttons
+    const actBar = el('div','meal-actions');
+    const editBtn = el('button','btn', '✏️ Modifier');
+    editBtn.onclick = ()=>toggleEditPanel(meal.id);
+    actBar.appendChild(editBtn);
+
+    // Report whole meal button
+    const reportBtn = el('button','btn btn-rose', '↗️ Reporter');
+    reportBtn.onclick = ()=>openMealReportModal(meal.id, day);
+    actBar.appendChild(reportBtn);
+
+    card.appendChild(actBar);
+  }
+
+  container.appendChild(card);
+}
+
+function buildEditPanel(meal){
+  const panel = el('div','edit-panel');
+  panel.id = `edit-${meal.id}`;
+
+  // Tabs
+  panel.innerHTML = `
+    <div class="edit-tabs">
+      <button class="etab active" onclick="switchEditTab('${meal.id}','plat',this)">Changer le plat</button>
+      ${meal.items.some(i=>i.swap) ? `<button class="etab" onclick="switchEditTab('${meal.id}','accomp',this)">Accompagnement</button>` : ''}
+    </div>
+    <div class="edit-mode active" id="etab-plat-${meal.id}">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px">Suggestions</div>
+      <div class="suggestions">
+        ${(meal.fallback||[]).map(f=>`<button class="sug-btn" onclick="applySuggestion('${meal.id}','${f.replace(/'/g,"\\'")}',this)">${f}</button>`).join('')}
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px">Ou écrire librement</div>
+      <div class="edit-form">
+        <input class="finput" id="editInput-${meal.id}" placeholder="Nom du repas..." style="flex:1">
+        <button class="btn btn-sage" onclick="applyFreeEdit('${meal.id}')">OK</button>
+      </div>
+    </div>
+    ${meal.items.some(i=>i.swap) ? `
+    <div class="edit-mode" id="etab-accomp-${meal.id}">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px">Choisir l'accompagnement</div>
+      ${meal.items.filter(i=>i.swap).map(it=>{
+        const sugs = SWAP_SUGGESTIONS[it.swapLabel] || [];
+        return `<div style="margin-bottom:12px">
+          <div style="font-size:12px;color:var(--text2);margin-bottom:6px">Remplacer <strong>${it.swapLabel}</strong> par :</div>
+          <div class="suggestions">${sugs.map(s=>`<button class="sug-btn" onclick="applySwap('${meal.id}','${it.swapLabel}','${s}',this)">${s}</button>`).join('')}</div>
+          <div class="edit-form"><input class="finput" id="swapInput-${meal.id}-${it.swapLabel.replace(/\s/g,'_')}" placeholder="Autre accompagnement..." style="flex:1"><button class="btn btn-sky" onclick="applyFreeSwap('${meal.id}','${it.swapLabel}')">OK</button></div>
+        </div>`;
+      }).join('')}
+    </div>` : ''}
+  `;
+  return panel;
+}
+
+function toggleEditPanel(mealId){
+  const p = $(`#edit-${mealId}`);
+  if(!p) return;
+  p.classList.toggle('open');
+  // adjust card height
+}
+
+function switchEditTab(mealId, tab, btn){
+  $(`#edit-${mealId}`).querySelectorAll('.etab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  $(`#edit-${mealId}`).querySelectorAll('.edit-mode').forEach(m=>m.classList.remove('active'));
+  $(`#etab-${tab}-${mealId}`).classList.add('active');
+}
+
+function applySuggestion(mealId, name, btn){
+  $$(`#etab-plat-${mealId} .sug-btn`).forEach(b=>b.style.background='');
+  btn.style.background='var(--sky-bg)';
+  btn.style.borderColor='var(--sky)';
+  btn.style.color='var(--sky)';
+  if(!S.mealEdits[mealId]) S.mealEdits[mealId]={};
+  S.mealEdits[mealId].name = name;
+  const nameEl = $(`#mname-${mealId}`);
+  if(nameEl) nameEl.textContent = name;
+  saveState();
+}
+
+function applyFreeEdit(mealId){
+  const val = $(`#editInput-${mealId}`).value.trim();
+  if(!val) return;
+  if(!S.mealEdits[mealId]) S.mealEdits[mealId]={};
+  S.mealEdits[mealId].name = val;
+  const nameEl = $(`#mname-${mealId}`);
+  if(nameEl) nameEl.textContent = val;
+  $(`#editInput-${mealId}`).value='';
+  saveState();
+}
+
+function applySwap(mealId, field, val, btn){
+  S.mealSwaps[`${mealId}-${field}`] = val;
+  // re-render pill
+  const card = $(`#mcard-${mealId}`);
+  if(card){
+    card.querySelectorAll('.swap-pill').forEach(sp=>{
+      if(sp.closest('.meal-detail')) {
+        const parent = sp.closest('.meal-detail');
+        const dd = parent.querySelector('.dd');
+        if(dd) {
+          const day = getMealDay(mealId);
+          const meal = getMeal(mealId);
+          if(meal){
+            const it = meal.items.find(i=>i.swapLabel===field);
+            if(it) sp.textContent = val + ' ⇄';
+          }
+        }
+      }
+    });
+  }
+  toggleEditPanel(mealId);
+  saveState();
+}
+
+function applyFreeSwap(mealId, field){
+  const key = `swapInput-${mealId}-${field.replace(/\s/g,'_')}`;
+  const val = $(`#${key}`)?.value.trim();
+  if(!val) return;
+  applySwap(mealId, field, val, null);
+}
+
+function openSwapPicker(mealId, field, pill){
+  // Just open edit panel on accompagnement tab
+  const panel = $(`#edit-${mealId}`);
+  panel.classList.add('open');
+  const accompTab = $(`#edit-${mealId}`)?.querySelectorAll('.etab')[1];
+  if(accompTab) { $(`#edit-${mealId}`).querySelectorAll('.etab').forEach(t=>t.classList.remove('active')); accompTab.classList.add('active'); }
+  $$(`#edit-${mealId} .edit-mode`).forEach(m=>m.classList.remove('active'));
+  const accompMode = $(`#etab-accomp-${mealId}`);
+  if(accompMode) accompMode.classList.add('active');
+}
+
+function toggleItemDone(itemKey, mealId, dateStr){
+  S.mealDone[itemKey] = true;
+  S.replacerItems = S.replacerItems.filter(r=>r.itemKey!==itemKey);
+  renderWeekNav();
+  renderDay();
+  renderReplacerZone();
+  updateNavBadge();
+  saveState();
+}
+
+function undoItemDone(itemKey, mealId, dateStr){
+  S.mealDone[itemKey] = false;
+  renderWeekNav();
+  renderDay();
+  renderReplacerZone();
+  updateNavBadge();
+  saveState();
+}
+
+function openItemReportModal(itemKey, label, icon, mealId){
+  // Legacy item-level: use the meal-level modal but create a synthetic meal for placement
+  const day = getMealDay(mealId);
+  if(day){
+    openMealReportModal(mealId, day);
+  } else {
+    // Meal is from a past day and may no longer be findable via getMealDay
+    // Open a placement modal for this specific item
+    const meal = getMeal(mealId);
+    const fakeMeal = meal || { id: mealId, name: label, icon, moment:'Soir', who:[{cls:'fam',l:'Famille'}], items:[{t:label}], noSkip:false, hasMeat:false };
+    // Find what day this meal was originally on
+    let origDay = null;
+    for(const d of DAYS_DATA){ if(d.meals.find(m=>m.id===mealId)){ origDay=d; break; } }
+    if(!origDay){
+      // Search all days to find where this mealId's items might be
+      for(const d of DAYS_DATA){
+        for(const m of d.meals){
+          const itemMatch = m.items?.some((_,ii) => `${m.id}-${ii}` === itemKey.split('-').slice(0,2).join('-'));
+          if(m.id === mealId || itemMatch){ origDay = d; break; }
+        }
+        if(origDay) break;
+      }
+    }
+    if(!origDay) origDay = DAYS_DATA[0]; // fallback
+
+    // Mark item as reported after placement
+    S._pendingItemReport = itemKey;
+    openMealReportModal(mealId, origDay);
+  }
+}
+
+/* ─── MEAL-LEVEL REPORT ─── */
+function openMealReportModal(mealId, day){
+  const meal = getMeal(mealId) || (S.extraMeals[day?.date]||[]).find(m=>m.id===mealId);
+  if(!meal || !day) return;
+  S.reportTarget = { mealId, dayDate: day.date, meal };
+  S.reportSelectedSlot = null;
+
+  const cleanName = (S.mealEdits[mealId]?.name || meal.name || '').replace(/<[^>]*>/g,'');
+  const nameEl = $('#reportMealName');
+  if(nameEl) nameEl.textContent = cleanName;
+  const subEl = $('#reportModalSub');
+  if(subEl) subEl.innerHTML = `Depuis <strong>${day.name} ${day.num}</strong> — ${meal.moment}`;
+  const warnEl = $('#reportCollisionWarn');
+  if(warnEl) warnEl.style.display = 'none';
+  const confirmBtn = $('#reportConfirmBtn');
+  if(confirmBtn){ confirmBtn.disabled = true; confirmBtn.onclick = ()=> confirmMealReport(); }
+
+  const picker = $('#reportSlotPicker');
+  picker.innerHTML = '';
+
+  // Show all available day+slot combos (excluding the source slot)
+  DAYS_DATA.forEach(d => {
+    ['Midi','Soir'].forEach(slot => {
+      // Skip current position
+      if(d.date === day.date && slot === meal.moment) return;
+      // Skip past days (except today)
+      if(isPast(d.date) && !isToday(d.date)) return;
+
+      const existing = d.meals.find(m => m.moment === slot && m.id !== mealId);
+      const existingExtra = (S.extraMeals[d.date]||[]).find(m => m.moment === slot);
+      const occupied = existing || existingExtra;
+      const occupiedName = occupied ? (S.mealEdits[occupied.id]?.name || occupied.name).replace(/<[^>]*>/g,'') : null;
+
+      const slotDiv = el('div', `rslot${occupied ? ' occupied' : ''}`);
+      slotDiv.innerHTML = `
+        <div class="rslot-day">${d.num}</div>
+        <div class="rslot-info">
+          <div class="rslot-label">${d.name} — ${slot}</div>
+          <div class="rslot-current">${occupied ? occupiedName : 'Créneau libre'}</div>
+        </div>
+        ${occupied ? '<div class="rslot-occupied-tag">⚠ occupé</div>' : ''}
+      `;
+      slotDiv.onclick = () => {
+        $$('.rslot').forEach(s => s.classList.remove('selected'));
+        slotDiv.classList.add('selected');
+        S.reportSelectedSlot = { dayDate: d.date, slot, occupiedMealId: occupied?.id || null };
+        $('#reportCollisionWarn').style.display = occupied ? 'block' : 'none';
+        $('#reportConfirmBtn').disabled = false;
+      };
+      picker.appendChild(slotDiv);
+    });
+  });
+
+  openModal('reportModal');
+}
+
+function confirmMealReport(){
+  if(!S.reportTarget || !S.reportSelectedSlot) return;
+  const { mealId, dayDate: srcDate, meal: srcMeal } = S.reportTarget;
+  const { dayDate: destDate, slot: destSlot, occupiedMealId } = S.reportSelectedSlot;
+
+  const srcDay = DAYS_DATA.find(d => d.date === srcDate);
+  const destDay = DAYS_DATA.find(d => d.date === destDate);
+  if(!destDay) return;
+
+  // 1) If destination is occupied → displace that meal to replacer
+  if(occupiedMealId){
+    const destMealIdx = destDay.meals.findIndex(m => m.id === occupiedMealId);
+    let displacedMeal;
+    if(destMealIdx >= 0){
+      displacedMeal = destDay.meals.splice(destMealIdx, 1)[0];
+    } else {
+      // Could be in extraMeals
+      const extras = S.extraMeals[destDate] || [];
+      const eIdx = extras.findIndex(m => m.id === occupiedMealId);
+      if(eIdx >= 0) displacedMeal = extras.splice(eIdx, 1)[0];
+    }
+    if(displacedMeal){
+      if(!S.displacedMeals) S.displacedMeals = [];
+      S.displacedMeals.push({
+        meal: displacedMeal,
+        fromDay: destDay.name,
+        fromDate: destDate,
+        fromSlot: destSlot
+      });
+    }
+  }
+
+  // 2) Remove source meal from its current day
+  let movedMeal = null;
+  if(srcDay){
+    const srcIdx = srcDay.meals.findIndex(m => m.id === mealId);
+    if(srcIdx >= 0){
+      movedMeal = srcDay.meals.splice(srcIdx, 1)[0];
+    } else {
+      const extras = S.extraMeals[srcDate] || [];
+      const eIdx = extras.findIndex(m => m.id === mealId);
+      if(eIdx >= 0) movedMeal = extras.splice(eIdx, 1)[0];
+    }
+  }
+
+  // If we couldn't find the meal to move (it was from past/legacy), create from the ref
+  if(!movedMeal && srcMeal){
+    movedMeal = { ...srcMeal };
+  }
+
+  if(movedMeal){
+    // 3) Update moment and insert at destination
+    movedMeal.moment = destSlot;
+    destDay.meals.push(movedMeal);
+    // Sort: Midi first, Soir second
+    destDay.meals.sort((a,b) => a.moment === 'Midi' ? -1 : 1);
+  }
+
+  // If this was a legacy item report, mark the item as reported
+  if(S._pendingItemReport){
+    S.mealReported[S._pendingItemReport] = true;
+    S._pendingItemReport = null;
+  }
+
+  closeModal('reportModal');
+  renderWeekNav();
+  renderDay();
+  renderReplacerZone();
+  updateNavBadge();
+
+  // Toast
+  const banner = el('div','alert-box info');
+  banner.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:999;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.12);animation:fadeUp .3s ease';
+  const cleanName = (S.mealEdits[mealId]?.name || movedMeal?.name || '').replace(/<[^>]*>/g,'');
+  banner.textContent = `✅ « ${cleanName.slice(0,25)} » → ${destDay.name} ${destDay.num} ${destSlot}`;
+  document.body.appendChild(banner);
+  setTimeout(()=>banner.remove(), 3000);
+  saveState();
+}
+
+function confirmReport(){ /* legacy — redirect */ confirmMealReport(); }
+
+/* ─── REPLACER ─── */
+function renderReplacerZone(){
+  // Combine: past undone items + displaced meals from collision
+  const pending = [];
+
+  // Past non-done non-reported items (legacy)
+  DAYS_DATA.forEach(day=>{
+    if(!isPast(day.date)||isToday(day.date)) return;
+    day.meals.forEach(meal=>{
+      if(meal.noSkip) return;
+      meal.items.forEach((it, ii)=>{
+        if(it.tip) return;
+        const itemKey = `${meal.id}-${ii}`;
+        if(!S.mealDone[itemKey] && !S.mealReported[itemKey]){
+          pending.push({
+            type:'item',
+            itemKey,
+            label: it.t.length > 40 ? it.t.slice(0,40)+'…' : it.t,
+            icon: meal.icon,
+            mealName: S.mealEdits[meal.id]?.name || meal.name,
+            fromDate: day.date,
+            fromName: day.name,
+            mealId: meal.id
+          });
+        }
+      });
+    });
+  });
+
+  // Displaced meals from collision
+  const displaced = S.displacedMeals || [];
+
+  S.replacerItems = pending;
+  const totalCount = pending.length + displaced.length;
+
+  const zone = $('#replacerZone');
+  const count = $('#replacerCount');
+  const body = $('#replacerBody');
+
+  if(!totalCount){ zone.style.display='none'; return; }
+  zone.style.display='block';
+  count.textContent = totalCount;
+  body.innerHTML='';
+
+  // Show displaced meals first (from collisions)
+  displaced.forEach((dm, i) => {
+    const cleanName = (dm.meal.name||'').replace(/<[^>]*>/g,'');
+    const div = el('div','repl-item');
+    div.style.borderColor = 'var(--gold-mid)';
+    div.style.background = '#FFF9F0';
+    div.innerHTML=`
+      <div class="repl-icon">${dm.meal.icon||'🍽️'}</div>
+      <div class="repl-info">
+        <div class="repl-name">${cleanName}</div>
+        <div class="repl-from">Déplacé depuis ${dm.fromDay} ${dm.fromDate.slice(8)} — ${dm.fromSlot}</div>
+      </div>
+      <div class="repl-actions">
+        <button class="btn btn-sage" onclick="placeDisplacedMeal(${i})">📍 Placer</button>
+        <button class="btn" style="font-size:11px;padding:5px 9px;color:var(--text3)" onclick="discardDisplaced(${i})">Supprimer</button>
+      </div>
+    `;
+    body.appendChild(div);
+  });
+
+  // Show legacy item-level pending
+  pending.forEach(item=>{
+    const div = el('div','repl-item');
+    div.innerHTML=`
+      <div class="repl-icon">${item.icon}</div>
+      <div class="repl-info">
+        <div class="repl-name">${item.label}</div>
+        <div class="repl-from">${item.mealName} · ${item.fromName} ${item.fromDate.slice(8)} mars</div>
+      </div>
+      <div class="repl-actions">
+        <button class="btn btn-sage" onclick="openItemReportModal('${item.itemKey}','${item.label.replace(/'/g,"\\'")}','${item.icon}','${item.mealId}')">Reporter</button>
+        <button class="btn" style="font-size:11px;padding:5px 9px;color:var(--text3)" onclick="dismissItem('${item.itemKey}')">Ignorer</button>
+      </div>
+    `;
+    body.appendChild(div);
+  });
+  updateNavBadge();
+}
+
+function placeDisplacedMeal(idx){
+  const dm = (S.displacedMeals||[])[idx];
+  if(!dm) return;
+  // Reuse the meal report modal to pick a slot
+  S.reportTarget = { mealId: dm.meal.id, dayDate: dm.fromDate, meal: dm.meal, _displacedIdx: idx };
+  S.reportSelectedSlot = null;
+
+  const cleanName = (dm.meal.name||'').replace(/<[^>]*>/g,'');
+  const nameEl = $('#reportMealName');
+  if(nameEl) nameEl.textContent = cleanName;
+  const subEl = $('#reportModalSub');
+  if(subEl) subEl.innerHTML = `Choisir un nouveau créneau`;
+  const warnEl = $('#reportCollisionWarn');
+  if(warnEl) warnEl.style.display = 'none';
+  const confirmBtn = $('#reportConfirmBtn');
+  if(confirmBtn){ confirmBtn.disabled = true; confirmBtn.onclick = ()=> confirmPlaceDisplaced(idx); }
+
+  const picker = $('#reportSlotPicker');
+  picker.innerHTML = '';
+
+  DAYS_DATA.forEach(d => {
+    ['Midi','Soir'].forEach(slot => {
+      if(isPast(d.date) && !isToday(d.date)) return;
+      const existing = d.meals.find(m => m.moment === slot);
+      const occupiedName = existing ? (S.mealEdits[existing.id]?.name || existing.name).replace(/<[^>]*>/g,'') : null;
+
+      const slotDiv = el('div', `rslot${existing ? ' occupied' : ''}`);
+      slotDiv.innerHTML = `
+        <div class="rslot-day">${d.num}</div>
+        <div class="rslot-info">
+          <div class="rslot-label">${d.name} — ${slot}</div>
+          <div class="rslot-current">${existing ? occupiedName : 'Créneau libre'}</div>
+        </div>
+        ${existing ? '<div class="rslot-occupied-tag">⚠ occupé</div>' : ''}
+      `;
+      slotDiv.onclick = () => {
+        $$('.rslot').forEach(s => s.classList.remove('selected'));
+        slotDiv.classList.add('selected');
+        S.reportSelectedSlot = { dayDate: d.date, slot, occupiedMealId: existing?.id || null };
+        $('#reportCollisionWarn').style.display = existing ? 'block' : 'none';
+        $('#reportConfirmBtn').disabled = false;
+      };
+      picker.appendChild(slotDiv);
+    });
+  });
+
+  openModal('reportModal');
+}
+
+function confirmPlaceDisplaced(idx){
+  if(!S.reportSelectedSlot) return;
+  const dm = (S.displacedMeals||[])[idx];
+  if(!dm) return;
+
+  const { dayDate: destDate, slot: destSlot, occupiedMealId } = S.reportSelectedSlot;
+  const destDay = DAYS_DATA.find(d => d.date === destDate);
+  if(!destDay) return;
+
+  // If occupied → chain displacement
+  if(occupiedMealId){
+    const destMealIdx = destDay.meals.findIndex(m => m.id === occupiedMealId);
+    if(destMealIdx >= 0){
+      const chainMeal = destDay.meals.splice(destMealIdx, 1)[0];
+      S.displacedMeals.push({
+        meal: chainMeal,
+        fromDay: destDay.name,
+        fromDate: destDate,
+        fromSlot: destSlot
+      });
+    }
+  }
+
+  // Place the displaced meal
+  dm.meal.moment = destSlot;
+  destDay.meals.push(dm.meal);
+  destDay.meals.sort((a,b) => a.moment === 'Midi' ? -1 : 1);
+
+  // Remove from displaced
+  S.displacedMeals.splice(idx, 1);
+
+  // Restore normal confirm handler
+  $('#reportConfirmBtn').onclick = ()=> confirmMealReport();
+
+  closeModal('reportModal');
+  renderWeekNav();
+  renderDay();
+  renderReplacerZone();
+  updateNavBadge();
+  saveState();
+}
+
+function discardDisplaced(idx){
+  if(!S.displacedMeals) return;
+  S.displacedMeals.splice(idx, 1);
+  renderReplacerZone();
+  updateNavBadge();
+  saveState();
+}
+
+function toggleReplacer(){
+  $('#replacerZone').classList.toggle('open');
+}
+
+function dismissItem(itemKey){
+  S.mealDone[itemKey] = true;
+  S.replacerItems = S.replacerItems.filter(r=>r.itemKey!==itemKey);
+  renderReplacerZone();
+  renderWeekNav();
+  saveState();
+}
+
+function updateNavBadge(){
+  const n = S.replacerItems.length + (S.displacedMeals||[]).length;
+  const badge = $('#nav-badge-repas');
+  badge.textContent = n;
+  badge.classList.toggle('visible', n>0);
+}
+
+/* ─── DLC MODAL ─── */
+function openDlcModal(mealId){
+  S.dlcTarget = mealId;
+  S.dlcSelectedDay = null;
+  const meal = getMeal(mealId);
+  const day = getMealDay(mealId);
+  $('#dlcMealName').textContent = meal?.meatLabel || meal?.name;
+
+  const existing = S.dlc[mealId];
+  $('#dlcInput').value = existing || '';
+
+  $('#dlcConflictBox').style.display='none';
+  $('#dlcSuggestionsWrap').style.display='none';
+  $('#dlcSuggestions').innerHTML='';
+
+  // live check on date input
+  $('#dlcInput').oninput = ()=>checkDlcConflict(mealId, day?.date, day?.name);
+
+  openModal('dlcModal');
+}
+
+function checkDlcConflict(mealId, mealDate, mealDayName){
+  const dlcVal = $('#dlcInput').value;
+  if(!dlcVal || !mealDate) return;
+
+  const conflict = dlcVal < mealDate;
+  $('#dlcConflictBox').style.display = conflict ? 'block' : 'none';
+
+  if(conflict){
+    $('#dlcConflictBox').innerHTML=`<div class="dlc-conflict-box">⚠️ La DLC (${dlcVal}) est <strong>avant</strong> le repas prévu (${mealDayName} ${mealDate.slice(8)}). Il faut cuisiner cette viande plus tôt !</div>`;
+
+    // Suggest up to 3 days before DLC
+    const suggestions = DAYS_DATA.filter(d=>d.date<=dlcVal && !isPast(d.date)).slice(0,3);
+    if(suggestions.length>0){
+      $('#dlcSuggestionsWrap').style.display='block';
+      $('#dlcSuggestions').innerHTML = suggestions.map(d=>{
+        const slots = d.meals.filter(m=>!S.mealDone[m.id]).map(m=>m.moment).join(' & ');
+        return `<div class="dlc-sug" onclick="selectDlcDay('${d.date}',this)">
+          <div class="dlc-sug-date">${d.num}</div>
+          <div class="dlc-sug-info">
+            <div class="dlc-sug-day">${d.name}</div>
+            <div class="dlc-sug-meal">${slots ? 'Créneaux libres : '+slots : 'Tous créneaux pris'}</div>
+          </div>
+          <div style="font-size:18px">›</div>
+        </div>`;
+      }).join('');
+    }
+  } else {
+    $('#dlcSuggestionsWrap').style.display='none';
+  }
+}
+
+function selectDlcDay(date, el){
+  $$('.dlc-sug').forEach(s=>s.classList.remove('selected'));
+  el.classList.add('selected');
+  S.dlcSelectedDay = date;
+}
+
+function confirmDlc(){
+  const dlcVal = $('#dlcInput').value;
+  if(!dlcVal || !S.dlcTarget) return;
+  S.dlc[S.dlcTarget] = dlcVal;
+  if(S.dlcSelectedDay){
+    const targetDay = DAYS_DATA.find(d=>d.date===S.dlcSelectedDay);
+    alert(`💡 Suggestion : déplacer ce repas au ${targetDay?.name} ${S.dlcSelectedDay.slice(8)} mars avant la DLC du ${dlcVal}.\n\nUtilise le bouton "Reporter" sur le repas pour le déplacer.`);
+  }
+  closeModal('dlcModal');
+  renderDay();
+  saveState();
+}
+
+/* ─── PLANNING NEXT WEEK ─── */
+const JOURS_FR = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+const MOIS_FR = ['Jan','Fév','Mars','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
+
+// Banque de propositions de repas
+const MIDI_DUO_POOL = [
+  {icon:'🥗',text:'Salade niçoise express',time:'10 min'},
+  {icon:'🥚',text:'Œufs brouillés & toast Boursin',time:'10 min'},
+  {icon:'🍝',text:'Coquillettes jambon + emmental',time:'15 min'},
+  {icon:'♻️',text:'Restes de la veille réchauffés',time:'5 min'},
+  {icon:'🥪',text:'Sandwich jambon-crudités',time:'5 min'},
+  {icon:'🍝',text:'Spaghetti pesto rosso',time:'15 min'},
+  {icon:'🥚',text:'Omelette + toast Boursin',time:'10 min'},
+  {icon:'🥗',text:'Taboulé + jambon + salade',time:'5 min'},
+  {icon:'🍝',text:'Pâtes beurre + emmental',time:'12 min'},
+  {icon:'🥪',text:'Pain de mie + Boursin + jambon',time:'5 min'},
+];
+const SOIR_FAMILLE_POOL = [
+  {icon:'🍝',text:'Gratin de pâtes jambon & béchamel',time:'35 min'},
+  {icon:'🍗',text:'Escalopes de poulet citron & riz',time:'25 min'},
+  {icon:'🫕',text:'Pot-au-feu de poulet TM6',time:'50 min'},
+  {icon:'🌯',text:'Wraps mexicains poulet & avocat',time:'20 min'},
+  {icon:'🍛',text:'Curry de légumes TM6 & riz',time:'30 min'},
+  {icon:'🥩',text:'Steak haché + frites air fryer',time:'20 min'},
+  {icon:'🍝',text:'Lasagnes maison (congelées ou fraîches)',time:'30 min'},
+  {icon:'🧀',text:'Cordons bleus air fryer + coquillettes',time:'25 min'},
+  {icon:'🐔',text:'Poulet rôti TM6 + purée Mousline',time:'50 min'},
+  {icon:'🍲',text:'Burritos Old El Paso en famille',time:'25 min'},
+  {icon:'🍗',text:'Nuggets air fryer + Patato Pops',time:'20 min'},
+  {icon:'🍝',text:'Poulet & serpentini sauce tomate TM6',time:'30 min'},
+];
+
+let generatedProposals = [];
+
+function openPlanningModal(){
+  // Set defaults: next monday → next sunday
+  const today = new Date(TODAY_STR);
+  const daysUntilMon = (1 - today.getDay() + 7) % 7 || 7;
+  const nextMon = new Date(today);
+  nextMon.setDate(today.getDate() + daysUntilMon);
+  const nextSun = new Date(nextMon);
+  nextSun.setDate(nextMon.getDate() + 6);
+
+  $('#pmStartDate').value = nextMon.toISOString().split('T')[0];
+  $('#pmEndDate').value = nextSun.toISOString().split('T')[0];
+  $('#pmNotes').value = '';
+
+  // Show setup, hide proposals
+  $('#planningSetup').style.display = 'block';
+  $('#planningBody').style.display = 'none';
+  $('#planningFooter').style.display = 'none';
+  $('#pmTitle').textContent = 'Nouveau planning';
+  $('#pmSub').textContent = 'Créer ou planifier la semaine suivante';
+
+  S.nextWeekValidated = {};
+  generatedProposals = [];
+
+  openModal('planningModal');
+}
+
+function backToPlanningSetup(){
+  $('#planningSetup').style.display = 'block';
+  $('#planningBody').style.display = 'none';
+  $('#planningFooter').style.display = 'none';
+  $('#pmTitle').textContent = 'Nouveau planning';
+  $('#pmSub').textContent = 'Créer ou planifier la semaine suivante';
+}
+
+function generatePlanningProposals(){
+  const startStr = $('#pmStartDate').value;
+  const endStr = $('#pmEndDate').value;
+  if(!startStr || !endStr) { alert('Choisis les dates de début et de fin'); return; }
+  if(endStr < startStr) { alert('La date de fin doit être après la date de début'); return; }
+
+  const start = new Date(startStr + 'T00:00:00');
+  const end = new Date(endStr + 'T00:00:00');
+
+  generatedProposals = [];
+  let midiIdx = 0, soirIdx = 0;
+
+  for(let d = new Date(start); d <= end; d.setDate(d.getDate()+1)){
+    const dow = d.getDay(); // 0=dim, 5=ven, 6=sam
+    const dateStr = d.toISOString().split('T')[0];
+    const num = String(d.getDate()).padStart(2,'0');
+    const name = JOURS_FR[dow];
+    const month = MOIS_FR[d.getMonth()];
+    const isFriday = dow === 5;
+    const isWeekend = dow === 0 || dow === 6;
+
+    const meals = [];
+
+    // Midi
+    if(isWeekend){
+      meals.push({moment:'Midi', icon:'🤷', text:'Chacun se débrouille', time:'—'});
+    } else {
+      const m = MIDI_DUO_POOL[midiIdx % MIDI_DUO_POOL.length];
+      meals.push({...m, moment:'Midi'});
+      midiIdx++;
+    }
+
+    // Soir
+    if(isFriday){
+      meals.push({moment:'Soir', icon:'🛵', text:'Commande extérieure 🎉', time:'—'});
+    } else {
+      const m = SOIR_FAMILLE_POOL[soirIdx % SOIR_FAMILLE_POOL.length];
+      meals.push({...m, moment:'Soir'});
+      soirIdx++;
+    }
+
+    generatedProposals.push({ date: dateStr, num, name, month, meals });
+  }
+
+  // Render proposals
+  const body = $('#planningBody');
+  body.innerHTML = '';
+
+  const firstDay = generatedProposals[0];
+  const lastDay = generatedProposals[generatedProposals.length - 1];
+  $('#pmTitle').textContent = `${firstDay.num} ${firstDay.month} → ${lastDay.num} ${lastDay.month}`;
+  $('#pmSub').textContent = `${generatedProposals.length} jours · Valide ou modifie chaque repas`;
+
+  generatedProposals.forEach(day => {
+    const dayDiv = el('div','pm-day');
+    dayDiv.innerHTML = `<div class="pm-day-hdr">${day.name} <span>${day.num} ${day.month}</span></div>`;
+    const mealsDiv = el('div','pm-meals');
+
+    day.meals.forEach((meal, mi) => {
+      const mealId = `next-${day.date}-${mi}`;
+      const validated = S.nextWeekValidated[mealId];
+      const mealDiv = el('div','pm-meal');
+      mealDiv.innerHTML = `
+        <div class="pm-meal-label">${meal.moment}</div>
+        <div class="pm-meal-content">
+          <div class="pm-proposed ${validated?'validated':''}" id="pmeal-${mealId}" onclick="toggleNextMeal('${mealId}',this)">
+            <span class="pm-icon">${meal.icon}</span>
+            <span class="pm-text" id="pmtext-${mealId}">${meal.text}</span>
+            <span style="font-size:11px;color:inherit;opacity:.7;margin-left:auto">${meal.time}</span>
+            <span class="pm-check">${validated?'✓':'○'}</span>
+          </div>
+          <div class="pm-edit-row">
+            <input class="finput" id="pmedit-${mealId}" placeholder="Modifier ce repas..." style="flex:1;font-size:13px">
+            <button class="btn btn-sage" onclick="applyNextEdit('${mealId}')" style="white-space:nowrap">OK</button>
+          </div>
+        </div>
+      `;
+      mealsDiv.appendChild(mealDiv);
+    });
+
+    dayDiv.appendChild(mealsDiv);
+    body.appendChild(dayDiv);
+  });
+
+  // Switch to proposals view
+  $('#planningSetup').style.display = 'none';
+  $('#planningBody').style.display = 'block';
+  $('#planningFooter').style.display = 'flex';
+}
+
+function toggleNextMeal(mealId, el){
+  S.nextWeekValidated[mealId] = !S.nextWeekValidated[mealId];
+  el.classList.toggle('validated', S.nextWeekValidated[mealId]);
+  el.querySelector('.pm-check').textContent = S.nextWeekValidated[mealId] ? '✓' : '○';
+  const editRow = el.parentElement.querySelector('.pm-edit-row');
+  if(editRow) editRow.classList.toggle('visible', !S.nextWeekValidated[mealId]);
+}
+
+function applyNextEdit(mealId){
+  const val = $(`#pmedit-${mealId}`)?.value.trim();
+  if(!val) return;
+  const textEl = $(`#pmtext-${mealId}`);
+  if(textEl) textEl.textContent = val;
+  $(`#pmedit-${mealId}`).value='';
+  S.nextWeekValidated[mealId] = true;
+  const proposed = $(`#pmeal-${mealId}`);
+  if(proposed){
+    proposed.classList.add('validated');
+    proposed.querySelector('.pm-check').textContent='✓';
+    const editRow = proposed.parentElement.querySelector('.pm-edit-row');
+    if(editRow) editRow.classList.remove('visible');
+  }
+}
+
+function validatePlanning(){
+  if(!generatedProposals.length){ alert('Aucun planning généré'); return; }
+
+  // Convert proposals into new DAYS_DATA entries
+  let newIdCounter = 200;
+  const newDays = [];
+
+  generatedProposals.forEach(day => {
+    const meals = [];
+    day.meals.forEach((meal, mi) => {
+      const mealId = `next-${day.date}-${mi}`;
+      const customText = $(`#pmtext-${mealId}`)?.textContent || meal.text;
+      const dow = new Date(day.date+'T00:00:00').getDay();
+      const isFriday = dow === 5;
+      const isWeekend = dow === 0 || dow === 6;
+
+      let who, noSkip = false, hasMeat = false;
+      if(meal.moment === 'Midi' && isWeekend){
+        who = [{cls:'lib',l:'Libre'}]; noSkip = true;
+      } else if(meal.moment === 'Midi'){
+        who = [{cls:'duo',l:'Duo'}];
+      } else if(isFriday){
+        who = [{cls:'fam',l:'Famille'},{cls:'ext',l:'Livraison'}]; noSkip = true;
+      } else {
+        who = [{cls:'fam',l:'Famille'}];
+        // Check if might have meat
+        const textLower = customText.toLowerCase();
+        if(textLower.includes('poulet') || textLower.includes('steak') || textLower.includes('viande') || textLower.includes('saumon') || textLower.includes('cordon')){
+          hasMeat = true;
+        }
+      }
+
+      meals.push({
+        id: `nw${newIdCounter++}`,
+        moment: meal.moment,
+        icon: meal.icon,
+        name: customText,
+        time: meal.time,
+        who,
+        noSkip,
+        hasMeat,
+        meatLabel: hasMeat ? 'Viande — saisir la DLC' : '',
+        items: [{ t: customText }],
+        fallback: ['Saucisses Knacki + purée (15 min)','Spaghetti sauce tomate (15 min)','Nuggets air fryer + Patato Pops (20 min)']
+      });
+    });
+
+    newDays.push({
+      date: day.date,
+      short: day.name.slice(0,3),
+      num: day.num,
+      name: day.name,
+      meals
+    });
+  });
+
+  // Add new days to DAYS_DATA
+  newDays.forEach(nd => {
+    // Check if day already exists
+    const existingIdx = DAYS_DATA.findIndex(d => d.date === nd.date);
+    if(existingIdx >= 0){
+      // Merge: add meals to existing day (don't overwrite)
+      DAYS_DATA[existingIdx].meals.push(...nd.meals);
+    } else {
+      DAYS_DATA.push(nd);
+    }
+  });
+
+  // Sort DAYS_DATA by date
+  DAYS_DATA.sort((a,b) => a.date.localeCompare(b.date));
+
+  closeModal('planningModal');
+
+  // Rebuild everything
+  buildWeekNav();
+  // Switch to first new day
+  const firstNewIdx = DAYS_DATA.findIndex(d => d.date === newDays[0]?.date);
+  if(firstNewIdx >= 0) S.activeDayIdx = firstNewIdx;
+  renderWeekNav();
+  renderDay();
+
+  // Update header
+  const first = DAYS_DATA[0];
+  const last = DAYS_DATA[DAYS_DATA.length-1];
+  const phSub = document.querySelector('#page-repas .ph-sub');
+  if(phSub) phSub.textContent = `${first.num} ${MOIS_FR[parseInt(first.date.split('-')[1])-1]||''} → ${last.num} ${MOIS_FR[parseInt(last.date.split('-')[1])-1]||''} · Midis pour 2 · Dîners en famille`;
+
+  // Toast
+  const banner = el('div','alert-box info');
+  banner.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.12);animation:fadeUp .3s ease;white-space:nowrap';
+  banner.textContent = `✅ Planning ajouté : ${newDays.length} jours, ${newDays.length*2} repas !`;
+  document.body.appendChild(banner);
+  setTimeout(()=>banner.remove(), 3000);
+  saveState();
+}
+
+/* ═══════════════════════════════════════════
+   COURSES
+═══════════════════════════════════════════ */
+function buildCourses(){
+  const container = $('#coursesContainer');
+  const colorMap = { rose:'rose', gold:'gold', sage:'sage', sky:'sky', peach:'peach', lav:'lav' };
+
+  COURSES_DATA.forEach((rayon,ri)=>{
+    const c = rayon.color;
+    const card = el('div','card');
+    const hdr = el('div','card-hdr');
+    hdr.innerHTML=`
+      <div class="ipill" style="background:var(--${c}-bg)">${rayon.icon}</div>
+      <div style="font-size:13.5px;font-weight:600;flex:1">${rayon.rayon}</div>
+      <div style="font-size:11.5px;color:var(--text3)" id="rcount-${ri}"></div>
+      <div class="ctoggle">›</div>
+    `;
+    hdr.onclick=()=>toggleCard(card);
+    card.appendChild(hdr);
+
+    const body=el('div','card-body');
+    const inner=el('div','card-body-inner');
+
+    // Items list
+    const ul=el('ul',''); ul.id=`rlist-${ri}`;
+    rayon.items.forEach((item,ii)=>{ ul.appendChild(buildCourseItem(item,ri,ii,c)); });
+    inner.appendChild(ul);
+
+    // Add item bar
+    const addBar=el('div','add-item-bar',`<span style="font-size:18px">＋</span> Ajouter un article`);
+    addBar.onclick=()=>toggleAddForm(ri);
+    inner.appendChild(addBar);
+
+    const addForm=el('div','add-item-form'); addForm.id=`addform-${ri}`;
+    addForm.innerHTML=`
+      <div class="add-form-row">
+        <input class="finput" id="addname-${ri}" placeholder="Nom de l'article..." style="flex:2">
+        <input class="finput" id="addqty-${ri}" placeholder="Qté" style="flex:1">
+        <button class="btn btn-solid-sky" onclick="addCourseItem(${ri})">Ajouter</button>
+      </div>
+    `;
+    inner.appendChild(addForm);
+    body.appendChild(inner);
+    card.appendChild(body);
+    container.appendChild(card);
+    updateRayonCount(ri);
+  });
+  updateCoursesProgress();
+
+  // Open first
+  toggleCard(container.querySelector('.card'));
+}
+
+function buildCourseItem(item, ri, ii, color, custom=false){
+  const key=`${ri}-${ii}`;
+  const li=el('li','item-row'+(S.coursesChecked[key]?' checked':''));
+  li.id=`citem-${key}`;
+  li.innerHTML=`
+    <div class="icheck"></div>
+    <div class="item-name">${item.n||item.name}</div>
+    ${(item.q||item.qty)?`<div class="item-qty">${item.q||item.qty}</div>`:''}
+    ${(item.c||item.check)?`<div class="item-check-tag">${item.c||item.check}</div>`:''}
+    <div class="item-del" onclick="event.stopPropagation();deleteCourseItem('${key}',${ri})">×</div>
+  `;
+  li.onclick=()=>toggleCourseItem(key,li,ri);
+  return li;
+}
+
+function toggleCourseItem(key, li, ri){
+  S.coursesChecked[key]=!S.coursesChecked[key];
+  li.classList.toggle('checked',S.coursesChecked[key]);
+  updateCoursesProgress();
+  updateRayonCount(ri);
+  saveState();
+}
+
+function deleteCourseItem(key, ri){
+  const li=$(`#citem-${key}`);
+  if(li){ li.remove(); delete S.coursesChecked[key]; }
+  updateCoursesProgress();
+  updateRayonCount(ri);
+  saveState();
+}
+
+function toggleAddForm(ri){
+  const f=$(`#addform-${ri}`);
+  f.classList.toggle('open');
+  if(f.classList.contains('open')) $(`#addname-${ri}`).focus();
+}
+
+function addCourseItem(ri){
+  const name=$(`#addname-${ri}`).value.trim();
+  const qty=$(`#addqty-${ri}`).value.trim();
+  if(!name) return;
+  const rayon = COURSES_DATA[ri];
+  const ii = rayon.items.length + (S.coursesCustom.filter(c=>c.ri===ri).length);
+  S.coursesCustom.push({ri,name,qty});
+  const ul=$(`#rlist-${ri}`);
+  ul.appendChild(buildCourseItem({n:name,q:qty},ri,`c${Date.now()}`,rayon.color,true));
+  $(`#addname-${ri}`).value='';
+  $(`#addqty-${ri}`).value='';
+  toggleAddForm(ri);
+  updateRayonCount(ri);
+  updateCoursesProgress();
+  saveState();
+}
+
+function updateRayonCount(ri){
+  const el=$(`#rcount-${ri}`);
+  if(!el) return;
+  const total=$(`#rlist-${ri}`)?.querySelectorAll('.item-row').length||0;
+  const done=$(`#rlist-${ri}`)?.querySelectorAll('.item-row.checked').length||0;
+  el.textContent=`${done}/${total}`;
+}
+
+function updateCoursesProgress(){
+  let total=0,done=0;
+  $$('#coursesContainer .item-row').forEach(r=>{ total++; if(r.classList.contains('checked')) done++; });
+  const pct=total?done/total*100:0;
+  $('#coursesBar').style.width=pct+'%';
+  $('#coursesCount').textContent=`${done}/${total}`;
+}
+
+/* ═══════════════════════════════════════════
+   MÉNAGE
+═══════════════════════════════════════════ */
+function buildMenage(){
+  const pool=$('#poolContainer');
+  const pieces={};
+  MENAGE_TACHES.forEach(t=>{ if(!pieces[t.p])pieces[t.p]=[]; pieces[t.p].push(t); });
+
+  Object.entries(pieces).forEach(([piece,tasks])=>{
+    const card=el('div','card');
+    const hdr=el('div','card-hdr');
+    hdr.innerHTML=`<div style="font-size:18px">${piece.split(' ')[0]}</div><div style="font-size:13.5px;font-weight:600;flex:1">${piece.slice(piece.indexOf(' ')+1)}</div><div class="ctoggle">›</div>`;
+    hdr.onclick=()=>toggleCard(card);
+    card.appendChild(hdr);
+
+    const body=el('div','card-body');
+    const inner=el('div','card-body-inner');
+    tasks.forEach(task=>{
+      const item=el('div','pool-item'+(S.menagePinned[task.id]?' pinned':''));
+      item.id=`pool-${task.id}`;
+      item.innerHTML=`
+        <div class="pin-box">${S.menagePinned[task.id]?'✓':''}</div>
+        <div>
+          <div style="font-size:13.5px;line-height:1.4">${task.t}</div>
+          ${task.tip?`<div style="font-size:11.5px;color:var(--text3);font-style:italic;margin-top:2px">${task.tip}</div>`:''}
+          ${task.delegate?`<div class="delegate-chip">👤 ${task.delegate}</div>`:''}
+        </div>
+      `;
+      item.onclick=()=>togglePin(task.id);
+      inner.appendChild(item);
+    });
+    body.appendChild(inner);
+    card.appendChild(body);
+    pool.appendChild(card);
+  });
+  renderWeekend();
+}
+
+function togglePin(taskId){
+  S.menagePinned[taskId]=!S.menagePinned[taskId];
+  const item=$(`#pool-${taskId}`);
+  if(item){ item.classList.toggle('pinned',S.menagePinned[taskId]); item.querySelector('.pin-box').textContent=S.menagePinned[taskId]?'✓':''; }
+  renderWeekend();
+  saveState();
+}
+
+function renderWeekend(){
+  const c=$('#weekendContainer'); c.innerHTML='';
+  const pinned=MENAGE_TACHES.filter(t=>S.menagePinned[t.id]);
+
+  if(!pinned.length){
+    c.innerHTML=`<div style="text-align:center;padding:40px 20px;color:var(--text3)"><div style="font-size:38px;margin-bottom:12px">📌</div><div>Épingle des tâches en mode Sélection.</div></div>`;
+    updateMenageProg(0,0); return;
+  }
+
+  const byPiece={};
+  pinned.forEach(t=>{ if(!byPiece[t.p])byPiece[t.p]=[]; byPiece[t.p].push(t); });
+
+  Object.entries(byPiece).forEach(([piece,tasks])=>{
+    const lbl=el('div','sec-title',`${piece.split(' ')[0]} ${piece.slice(piece.indexOf(' ')+1)}`);
+    lbl.style.marginTop='14px';
+    c.appendChild(lbl);
+    tasks.forEach(task=>{
+      const item=el('div','wk-item'+(S.menageDone[task.id]?' done':''));
+      item.innerHTML=`
+        <div class="wk-check"></div>
+        <div>
+          <div class="wk-text">${task.t}</div>
+          ${task.delegate?`<div class="delegate-chip">👤 ${task.delegate}</div>`:''}
+        </div>
+      `;
+      item.onclick=()=>{ S.menageDone[task.id]=!S.menageDone[task.id]; item.classList.toggle('done',S.menageDone[task.id]); const p=MENAGE_TACHES.filter(t=>S.menagePinned[t.id]); updateMenageProg(p.filter(t=>S.menageDone[t.id]).length,p.length); saveState(); };
+      c.appendChild(item);
+    });
+  });
+
+  const p=pinned; const done=p.filter(t=>S.menageDone[t.id]).length;
+  updateMenageProg(done,p.length);
+}
+
+function updateMenageProg(done,total){
+  $('#mBar').style.width=total?`${done/total*100}%`:'0%';
+  $('#mCount').textContent=`${done}/${total}`;
+}
+
+function resetMenage(){
+  if(!confirm('Réinitialiser toutes les tâches cochées ?')) return;
+  S.menageDone={}; S.menagePinned={};
+  $$('.pool-item').forEach(i=>{ i.classList.remove('pinned'); i.querySelector('.pin-box').textContent=''; });
+  renderWeekend();
+  saveState();
+}
+
+function switchMtab(mode){
+  $$('.mtab').forEach((t,i)=>t.classList.toggle('active',(i===0&&mode==='select')||(i===1&&mode==='weekend')));
+  $('#mmode-select').classList.toggle('active',mode==='select');
+  $('#mmode-weekend').classList.toggle('active',mode==='weekend');
+  if(mode==='weekend') renderWeekend();
+}
+
+/* ═══════════════════════════════════════════
+   MODAL HELPERS
+═══════════════════════════════════════════ */
+function openModal(id){
+  const m=$(`#${id}`);
+  if(m) m.classList.add('open');
+}
+function closeModal(id){
+  const m=$(`#${id}`);
+  if(m) m.classList.remove('open');
+}
+// Close modal on overlay click
+document.addEventListener('click',e=>{
+  if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open');
+});
+
+/* ─── CARD TOGGLE ─── */
+function toggleCard(card){
+  card.classList.toggle('open');
+}
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+async function init(){
+  await loadState();
+  document.getElementById('loadingScreen').classList.add('hidden');
+  setTimeout(()=>{ const ls=document.getElementById('loadingScreen'); if(ls) ls.remove(); }, 500);
+  buildRepas();
+  buildCourses();
+  buildMenage();
+}
+init();
+</script>
+</body>
+</html>
